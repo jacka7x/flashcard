@@ -1,0 +1,9 @@
+node_modules
+public
+
+*CHECK THIS LATER
+src/reportWebVitals.ts
+
+* Functions must have 
+at least one parameter  functional/functional-parameters
+*src/scripts/scheduling.ts

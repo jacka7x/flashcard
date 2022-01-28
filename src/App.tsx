@@ -1,10 +1,11 @@
-// types and interfaces
-import { Card_IF, CardState, Answer } from './interfaces'
 
 // from components
 import { Navbar } from './components/Navbar'
 import { Card } from './components/Card'
 import { CardButtons } from './components/CardButtons'
+
+// from decks
+import { fetchDeckFromDB } from './decks/deckLoading'
 
 // from scripts
 import { 
@@ -14,7 +15,12 @@ import {
 } from './scripts/scheduling'
 
 // react imports
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+
+// Google Analyitics with ReactGA
+// import ReactGA from 'react-ga';
+// ReactGA.initialize('G-2ZJPT3PNYD');
+// ReactGA.pageview(window.location.pathname + window.location.search);
 
 // change/remove this later for when last card is removed
 const noCard: Card_IF = {
@@ -28,68 +34,91 @@ const noCard: Card_IF = {
   }
 }
 
+const reviewUpdatePeriod: number = 500
+
+function useInterval(callback: Function, delay: number | null) {
+  const savedCallback: React.MutableRefObject<Function | undefined> = useRef<Function>()
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current= callback
+  }, [callback])
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      if(savedCallback.current) {
+         savedCallback.current()
+      }
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay)
+      return () => clearInterval(id)
+    }
+  }, [delay]);
+}
+
 function App() {
-  const [totalDeckState, setTotalDeckState] = useState<Card_IF[]>([])
+  // console.clear()
+  // reportWebVitals(console.log)
+  console.log('rendered')
 
-  // setReviewDeckState should NOT be called
-  const [reviewDeckState, setReviewDeckState] = useState<Card_IF[]>([])
-  const [cardState, setCardState] = useState<CardState>('front')
-  const currentCard: Card_IF | undefined = reviewDeckState[0]
+  const [totalDeckState, setTotalDeckState] = useState<Card_IF[]> ([])
 
-  console.log('Render')
-  console.log(' ')
+  // setReviewDeckState should ONLY be called in updateReviewDeck()
+  const [reviewDeckState, setReviewDeckState] = useState<Card_IF[]> ([])
+  const [reviewCountState, setReviewCountState] = useState<number> (0)
+  
+  const [currentCardState, setCurrentCardState] = useState<Card_IF | undefined> (undefined)
+  const [cardState, setCardState] = useState<CardState> ('front')
 
+
+  // inital loading of deck from database
   useEffect(() => {
     const getDeck = async () => {
-
       // database should be sorted by reveiw date
-      const deck: Card_IF[] = await fetchDeckFromDB()
-      setTotalDeckState(deck)
+      const totalDeck: Card_IF[] = await fetchDeckFromDB()
+      setTotalDeckState(totalDeck)
     }
-    
     getDeck()
   }, [])
 
+  // update review pile and counter
+  useInterval(() => {
+      updateReviewDeck()
+  }, reviewUpdatePeriod)
+
   useEffect(() => {
-    const newReveiwDeck: Card_IF[] = getReviewableCards()
-    setReviewDeckState(newReveiwDeck)
+    console.clear()
+    
+    updateReviewDeck()
   }, [totalDeckState, cardState])
 
-  console.log('total / review deck (after useEffects)')
-  console.log(totalDeckState)
-  console.log(reviewDeckState)
-  console.log(' ');console.log(' ');console.log(' ')
+  useEffect(() => {
+    setReviewCountState(reviewDeckState.length)
+  }, [reviewDeckState])
 
-  const fetchDeckFromDB = async () => {
-    console.log('Fetching from DB...')
-    
-    const response = await fetch('http://172.30.1.35:5000/deck')
-    const data: Card_IF[] = await response.json()
+  // update currentCard
+  useEffect(() => {
+    setCurrentCardState(reviewDeckState[0])
+  }, [reviewDeckState])
 
-    // for testing purposes, set all reveiws to current time
-    console.log('Setting inital spacing values...')
-    console.log(`Base spacing set to ${getNewSpacingWrong()}`)
-    console.log(`Current Unix time: ${getCurrentUnixTime()}`)
-    return data.map( card => {
-      
-      card['review']['review_date'] = 
-        getCurrentUnixTime() + getNewSpacingWrong()
-      card['review']['spacing'] = getNewSpacingWrong()
-      return card
-    })
+  const updateReviewDeck = (): void => {
+    const newReviewDeck: Card_IF[] = getReviewableCards()
+
+    // setReviewDeckState should NOT be called elsewhere
+    setReviewDeckState(newReviewDeck)
   }
 
   const getReviewableCards = (): Card_IF[] => {
-    const nowUnix= getCurrentUnixTime()
-    const filteredDeck = totalDeckState.filter(
-      
-      (card) => {
-      console.log(card['review']['review_date'] - nowUnix)
-      return card['review']['review_date'] < nowUnix
-    })
+    const nowUnix = getCurrentUnixTime()
 
+    const filteredDeck = totalDeckState.filter(
+      (card) =>  card['review']['review_date'] < nowUnix)
     return filteredDeck
   }
+
+
 
   const showAnswer = (): void => {
     setCardState('back')
@@ -105,40 +134,39 @@ function App() {
   }
 
   const updateCard = (answer: Answer): void => {
-    if (!currentCard) return
+    if (!currentCardState) return
 
     const nowUnix = getCurrentUnixTime()
+    const newSpacing = (answer === 'right') ?
+      getNewSpacingRight(currentCardState['review']['spacing']) :
+      getNewSpacingWrong()
 
-    // set review period based on answer and card difficulty
-    if (answer === 'right') {
-      const oldSpacing = currentCard['review']['spacing']
-      const newSpacing = getNewSpacingRight(oldSpacing)
-
-      currentCard['review']['review_date'] = nowUnix + newSpacing
-      currentCard['review']['spacing'] = newSpacing
-    } else {
-      const newSpacing = getNewSpacingWrong()
-      
-      currentCard['review']['review_date'] = nowUnix + newSpacing
-      currentCard['review']['spacing'] = newSpacing
+    const updatedCard: Card_IF = {
+      ...currentCardState,
+      review: {
+        review_date: nowUnix + newSpacing,
+        spacing: newSpacing
+      }
     }
 
-    // remove current card from totalDeck and add crrent card to end
+    // remove current card from totalDeck and add current card to end
     // THIS ASSUMES TOTAL DECK IS SORTED EACH RENDER TO WORK WELL
     // REVISIT THIS
     const newTotalDeckState: Card_IF[] =
-      [...totalDeckState.slice(1), currentCard]
+      [...totalDeckState.slice(1), updatedCard]
 
     setTotalDeckState(newTotalDeckState)
   }
 
+
+
   return (
     <div className="App">
 
-      <Navbar></Navbar>
+      <Navbar reviewCount={reviewCountState}></Navbar>
 
       <Card
-        card={currentCard ? currentCard : noCard}
+        card={currentCardState ? currentCardState : noCard}
         state={cardState}
       ></Card>
       

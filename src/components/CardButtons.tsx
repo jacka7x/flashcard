@@ -1,4 +1,3 @@
-import { CardState, Answer } from '../interfaces'
 
 interface ShowProps {
     onMouseUp: () => void

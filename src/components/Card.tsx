@@ -1,4 +1,3 @@
-import { Card_IF, CardState} from '../interfaces'
 
 interface Props {
   card: Card_IF

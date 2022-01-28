@@ -10,7 +10,7 @@
   --_purple: #AF39B3;
 
   /* general */
-  --app-padding: 1rem;
+  --app-padding: 0.7rem;
   --app-border-rad: 0.6rem;
 }
 
@@ -55,6 +55,14 @@ body, html, #root {
   
   border: 1px solid var(--_black);
   border-radius: var(--app-border-rad);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-count {
+  font-size: 2rem;
 }
 
 .card {
