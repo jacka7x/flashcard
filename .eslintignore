@@ -1,9 +1,6 @@
 node_modules
 public
+src/types/react-app-env.d.ts
 
 *CHECK THIS LATER
-src/reportWebVitals.ts
-
-* Functions must have 
-at least one parameter  functional/functional-parameters
-*src/scripts/scheduling.ts
+src/test/analytics/reportWebVitals.ts

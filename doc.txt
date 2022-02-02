@@ -1,0 +1,9 @@
+TODO--------------------------------------------------------+
+    >IMPLEMENT TESTS
+    >Add current card edit feature (popup/form)
+    >Select from multiple decks (Decklist page/Menu)
+
+
+
+IDEAS-------------------------------------------------------+
+    >tap/click card to copy text

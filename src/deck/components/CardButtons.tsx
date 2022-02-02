@@ -1,15 +1,16 @@
 
 interface ShowProps {
-    onMouseUp: () => void
+  onMouseUp: () => void
 }
 
 interface AnswerProps {
   onMouseUp: () => void
 }
 
-interface ButtonsProps {
-  state: CardState
-  onMouseUp: () => void
+interface Props {
+  reviewCount: number
+  cardFace: CardFace
+  showAnswer: () => void
   answer: (answer: Answer) => void
 }
 
@@ -24,6 +25,7 @@ const RightButton = ({onMouseUp}: AnswerProps) => {
       <p>Right</p>
   </div>
 }
+
 const WrongButton = ({onMouseUp}: AnswerProps) => {
   return <div className=' answer-button wrong-button' onMouseUp={onMouseUp}>
       <p>Wrong</p>
@@ -31,17 +33,18 @@ const WrongButton = ({onMouseUp}: AnswerProps) => {
 }
 
 export const CardButtons= ( 
-  { state, onMouseUp, answer }: ButtonsProps) => {
+  { reviewCount, cardFace, showAnswer, answer }: Props) => {
   return <div className='card-buttons'>
-      {
-        state === 'front' ?
-          <ShowButton onMouseUp={onMouseUp}></ShowButton> :
-          <div className='answer-buttons'>
-            <RightButton onMouseUp={() => answer('right')}></RightButton>
-            <div className='answer-button-seperator'></div>
-            <WrongButton onMouseUp={() => answer('wrong')}></WrongButton>
-          </div>
+      { 
+        reviewCount !== 0 ?
+          cardFace === 'front' ? 
+            <ShowButton onMouseUp={showAnswer}></ShowButton> :
+            <div className='answer-buttons'>
+              <RightButton onMouseUp={() => answer('right')}></RightButton>
+              <div className='answer-button-seperator'></div>
+              <WrongButton onMouseUp={() => answer('wrong')}></WrongButton>
+            </div>
+        : ''
       }
-      
     </div>
 }

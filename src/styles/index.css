@@ -1,16 +1,23 @@
+/* THIS DISABLES RUNTIME ERRORS */
+iframe{display: none;}
+
 :root {
   /* MAKE DARKBLUE/GOLD DARK THEME (AOE4)*/
   /* MAKE WHITE/GREEN LIGHT THEME */
 
   /* color palette */
-  --background: rgb(255, 255, 255);
   --_black: #202020;
   --_green: #28b34b;
   --_orange: #B34115;
   --_purple: #AF39B3;
 
+  /* specific color settings */
+  --background: white;
+  --popup-background: #06030caf;
+  --popup-form-background: white;
+
   /* general */
-  --app-padding: 0.7rem;
+  --app-padding: 0.3rem;
   --app-border-rad: 0.6rem;
 }
 
@@ -26,7 +33,6 @@ body, html, #root {
 
 #root {
   background-color: var(--background);
-
   padding: 0 var(--app-padding);
 
   display: flex;
@@ -37,7 +43,8 @@ body, html, #root {
 
 .App {
   flex: 1;
-  margin: var(--app-padding);
+  margin: calc(var(--app-padding) / 2);
+
   width: 100%;
   max-width: 40rem;
 
@@ -165,4 +172,40 @@ body, html, #root {
 .wrong-button:active {
   border-radius: 0 var(--app-border-rad) var(--app-border-rad) 0;
   background-color: var(--_orange);
+}
+
+.add-card-button {
+  height: 2rem;
+  width: 2rem;
+  background-color: green;
+}
+
+.delete-card-button {
+  height: 2rem;
+  width: 2rem;
+  background-color: rgb(255, 0, 0);
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+
+  background-color: var(--popup-background);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-card-form {
+
+  width: 80vw;
+  height: 60vh;
+
+  border-radius: var(--app-border-rad);
+  background-color: var(--popup-form-background);
+  box-shadow: 0px 0px 15px -3px white;
 }

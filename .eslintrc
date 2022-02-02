@@ -1,20 +1,51 @@
 {
-    "root": true,
+  "root": true,
 
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "project": "./tsconfig.json"
-    },
-    
-    "plugins": [
-      "@typescript-eslint",
-      "functional"
-    ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+      "project": "./tsconfig.json"
+  },
+  
+  "plugins": [
+    "@typescript-eslint",
+    "functional",
+    "react"
+  ],
 
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:functional/all"
-    ]
-  }
+  "rules": {
+    "@typescript-eslint/no-inferrable-types": 0,
+    "react/react-in-jsx-scope": 0,
+    "linebreak-style": 0,
+    "quotes": 0,
+    "capitalized-comments": 0,
+    "multiline-comment-style": 0,
+    "object-curly-spacing": 0,
+    "semi": 0,
+    "camelcase": 0,
+    "dot-notation": 0,
+    "padded-blocks": 0,
+    "one-var": 0,
+    "sort-imports": 0,
+    "function-call-argument-newline": 0,
+    "arrow-body-style": 0,
+    "no-console": 0,
+    "indent": 0,
+    "quote-props": 0,
+    "sort-keys": 0,
+    "consistent-return": 0,
+    "object-shorthand": 0
+  },
+
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+
+  "extends": [
+    "eslint:all",
+    "plugin:react/all",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
+}

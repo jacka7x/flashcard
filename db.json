@@ -1,64 +1,32 @@
 {
-  "deck": [
+  "deck_list": [
     {
-      "card_text": {
-        "faceText": "hello",
-        "backText": "안녕하세요"
-      },
-      "review": {
-        "review_date": "",
-        "spacing": "5000"
-      }
-    },
-    {
-      "card_text": {
-        "faceText": "tree",
-        "backText": "나무"
-      },
-      "review": {
-        "review_date": "",
-        "spacing": "5000"
-      }
-    },
-    {
-      "card_text": {
-        "faceText": "fly",
-        "backText": "날다"
-      },
-      "review": {
-        "review_date": "",
-        "spacing": "5000"
-      }
-    },
-    {
-      "card_text": {
-        "faceText": "do",
-        "backText": "하다"
-      },
-      "review": {
-        "review_date": "",
-        "spacing": "5000"
-      }
-    },
-    {
-      "card_text": {
-        "faceText": "person",
-        "backText": "사람"
-      },
-      "review": {
-        "review_date": "",
-        "spacing": "5000"
-      }
-    },
-    {
-      "card_text": {
-        "faceText": "ant",
-        "backText": "개미"
-      },
-      "review": {
-        "review_date": "",
-        "spacing": "5000"
-      }
+      "name": "korean",
+      "id": "1234567890",
+      "cards": [
+        {
+          "id": "3742314448",
+          "card_text": {
+            "face_text": "cat",
+            "back_text": "고양이"
+          },
+          "review": {
+            "review_date": 1643802964036,
+            "spacing": 7000
+          }
+        },
+        {
+          "id": "3848084031",
+          "card_text": {
+            "face_text": "tree",
+            "back_text": "나무"
+          },
+          "review": {
+            "review_date": 1643803244190,
+            "spacing": 5000
+          }
+        }
+      ]
     }
   ]
 }

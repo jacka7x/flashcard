@@ -1,180 +1,199 @@
 
-// from components
-import { Navbar } from './components/Navbar'
-import { Card } from './components/Card'
-import { CardButtons } from './components/CardButtons'
+// from deck
+import { Deck } from './deck/Deck'
 
-// from decks
-import { fetchDeckFromDB } from './decks/deckLoading'
+// from popups
+import { Popup } from './popups/Popup'
 
-// from scripts
+// from general/scripts
 import { 
   getCurrentUnixTime,
   getNewSpacingRight,
   getNewSpacingWrong 
-} from './scripts/scheduling'
+} from './general/scripts/scheduling'
+import { useInterval } from './general/scripts/useInterval'
+import {
+  fetchDecksFromStorage,
+  pushDeckToStorage
+} from './general/scripts/deckStorage'
+import { sortByReview } from './general/scripts/sortByReview'
+import {
+  addCardToDeckInStorage,
+  deleteCardFromDeckInStorage
+} from './general/scripts/deckStorage'
 
 // react imports
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
-// Google Analyitics with ReactGA
-// import ReactGA from 'react-ga';
-// ReactGA.initialize('G-2ZJPT3PNYD');
-// ReactGA.pageview(window.location.pathname + window.location.search);
-
-// change/remove this later for when last card is removed
-const noCard: Card_IF = {
-  card_text: {
-    faceText: 'No Card.',
-    backText: 'No Card'
-  },
-  review: {
-    review_date: 0,
-    spacing: 0
-  }
-}
-
-const reviewUpdatePeriod: number = 500
-
-function useInterval(callback: Function, delay: number | null) {
-  const savedCallback: React.MutableRefObject<Function | undefined> = useRef<Function>()
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current= callback
-  }, [callback])
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      if(savedCallback.current) {
-         savedCallback.current()
-      }
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay)
-      return () => clearInterval(id)
-    }
-  }, [delay]);
-}
+// dynamically update to period to next review!! 
+// test useInterval works properly with updating period
+const reviewUpdatePeriod = 200
 
 function App() {
-  // console.clear()
-  // reportWebVitals(console.log)
-  console.log('rendered')
+  // console.log('rendered')
 
-  const [totalDeckState, setTotalDeckState] = useState<Card_IF[]> ([])
+  const [currentWorkingDeckState, setCurrentWorkingDeckState]
+    = useState<Deck_IF>()
+
+  const [currentTotalDeckState, setCurrentTotalDeckState]
+    = useState<Card_IF[]>([])
 
   // setReviewDeckState should ONLY be called in updateReviewDeck()
-  const [reviewDeckState, setReviewDeckState] = useState<Card_IF[]> ([])
-  const [reviewCountState, setReviewCountState] = useState<number> (0)
-  
-  const [currentCardState, setCurrentCardState] = useState<Card_IF | undefined> (undefined)
-  const [cardState, setCardState] = useState<CardState> ('front')
+  const [currentReviewDeckState, setCurrentReviewDeckState]
+    = useState<Card_IF[]>([])
+
+  const [currentReviewCountState, setCurrentReviewCountState]
+    = useState<number>(0)
+
+  const [popupState, setPopupState] = useState<Popups>(null)
 
 
-  // inital loading of deck from database
+  // inital loading of decks [some ajustments for testing]
   useEffect(() => {
-    const getDeck = async () => {
-      // database should be sorted by reveiw date
-      const totalDeck: Card_IF[] = await fetchDeckFromDB()
-      setTotalDeckState(totalDeck)
-    }
-    getDeck()
+    loadDeck()
   }, [])
 
-  // update review pile and counter
+  // update total deck when working deck is changed
+  useEffect(() => {
+    if (!currentWorkingDeckState) return
+    setCurrentTotalDeckState(currentWorkingDeckState['cards'])
+  }, [currentWorkingDeckState])
+
+  // update review deck when total deck is changed
+  useEffect(() => {
+    if(currentWorkingDeckState) {
+      pushDeckToStorage(currentWorkingDeckState, currentTotalDeckState)
+    }
+    updateCurrentReviewDeck()
+  }, [currentTotalDeckState])
+
+  // update review deck periodically
   useInterval(() => {
-      updateReviewDeck()
+      updateCurrentReviewDeck()
   }, reviewUpdatePeriod)
 
+  // update current review count when review deck is changed
   useEffect(() => {
-    console.clear()
+    setCurrentReviewCountState(currentReviewDeckState.length)
+  }, [currentReviewDeckState])
+
+  const loadDeck = async (): Promise<void> => {
+
+    // change to return ALL decks (seperate function?)
+    const decks: Deck_IF[] | undefined = await fetchDecksFromStorage()
+    if(!decks[0]) return
     
-    updateReviewDeck()
-  }, [totalDeckState, cardState])
+    // FOR TESTING - use only first deck
+    const deck = decks[0]
 
-  useEffect(() => {
-    setReviewCountState(reviewDeckState.length)
-  }, [reviewDeckState])
+    const newDeck: Deck_IF = {
+      id: deck['id'],
+      name: deck['name'],
+      cards: deck['cards']
+    }
 
-  // update currentCard
-  useEffect(() => {
-    setCurrentCardState(reviewDeckState[0])
-  }, [reviewDeckState])
+    setCurrentWorkingDeckState(newDeck)
+    console.log(`Loaded ${decks[0]['name']} [${decks[0]['id']}].`)
 
-  const updateReviewDeck = (): void => {
-    const newReviewDeck: Card_IF[] = getReviewableCards()
-
-    // setReviewDeckState should NOT be called elsewhere
-    setReviewDeckState(newReviewDeck)
+    // add return to stop reviewing of cards until deck is loaded
   }
 
-  const getReviewableCards = (): Card_IF[] => {
-    const nowUnix = getCurrentUnixTime()
+  const updateCurrentReviewDeck = (): void => {
+    const reviewDeck: Card_IF[]
+      = getReviewableCards(currentTotalDeckState)
+    const sortedReviewDeck = sortByReview(reviewDeck)
+    // setReviewDeckState should NOT be called elsewhere
+    setCurrentReviewDeckState(sortedReviewDeck)
+  }
 
-    const filteredDeck = totalDeckState.filter(
-      (card) =>  card['review']['review_date'] < nowUnix)
+  const getReviewableCards = (deck: Card_IF[]): Card_IF[] => {
+    const unixTime = getCurrentUnixTime()
+    
+    const filteredDeck = deck.filter((card) =>
+      card['review']['review_date'] < unixTime)
+
     return filteredDeck
   }
 
+  const updateCard = (answer: Answer, card: Card_IF): void => {
+    if (!currentTotalDeckState) return
 
-
-  const showAnswer = (): void => {
-    setCardState('back')
-  }
-
-  const nextCard = (): void => {
-    setCardState('front')
-  }
-
-  const processAnswer = (answer: Answer): void => {
-    updateCard(answer)
-    nextCard()
-  }
-
-  const updateCard = (answer: Answer): void => {
-    if (!currentCardState) return
-
-    const nowUnix = getCurrentUnixTime()
-    const newSpacing = (answer === 'right') ?
-      getNewSpacingRight(currentCardState['review']['spacing']) :
+    const nowUnix: number = getCurrentUnixTime()
+    const newSpacing: number = (answer === 'right') ?
+      getNewSpacingRight(card['review']['spacing']) :
       getNewSpacingWrong()
-
+    
+    // new object for updated card
     const updatedCard: Card_IF = {
-      ...currentCardState,
+      ...card,
       review: {
         review_date: nowUnix + newSpacing,
         spacing: newSpacing
       }
     }
 
-    // remove current card from totalDeck and add current card to end
-    // THIS ASSUMES TOTAL DECK IS SORTED EACH RENDER TO WORK WELL
-    // REVISIT THIS
-    const newTotalDeckState: Card_IF[] =
-      [...totalDeckState.slice(1), updatedCard]
+    // find reviewd card by ID 
+    const cardIndex: number 
+      = currentTotalDeckState.findIndex( (cardTotal) => {
+        return cardTotal['id'] === card['id']
+    })
 
-    setTotalDeckState(newTotalDeckState)
+    // CHECK THIS WORKS PROPERLY
+    const newCurrentTotalDeckState: Card_IF[] = [
+        ...currentTotalDeckState.slice(0, cardIndex),
+        updatedCard,
+        ...currentTotalDeckState.slice(cardIndex + 1)
+      ]
+
+    setCurrentTotalDeckState(newCurrentTotalDeckState)
   }
 
+  const addCard =
+    async (deck: Deck_IF, newCardText: Card_Text): Promise<void> => {
+    
+    addCardToDeckInStorage(deck, newCardText)
+    loadDeck()
+  }
 
+  const deleteCard =
+    async (deck: Deck_IF, card: (Card_IF | undefined)): Promise<void> => {
+    card ?
+      deleteCardFromDeckInStorage(deck, card) :
+      console.log('No card to delete, review deck empty.')
+    
+    loadDeck()
+  }
+
+  const openPopup = (popupType: Popups): void => {
+    setPopupState(popupType)
+  }
+
+  const closePopup = (): void => {
+    setPopupState(null)
+  }
 
   return (
     <div className="App">
-
-      <Navbar reviewCount={reviewCountState}></Navbar>
-
-      <Card
-        card={currentCardState ? currentCardState : noCard}
-        state={cardState}
-      ></Card>
-      
-      <CardButtons
-        state={cardState}
-        onMouseUp={showAnswer}
-        answer={processAnswer}
-      ></CardButtons> 
+      {
+        currentWorkingDeckState ? 
+          <Deck
+            workingDeck={currentWorkingDeckState} 
+            reviewDeck={currentReviewDeckState}
+            reviewCount={currentReviewCountState}
+            updateCard={updateCard}
+            deleteCard={deleteCard}
+            openPopup={openPopup}
+          ></Deck> : ''
+      }
+      {
+        popupState ? 
+          <Popup
+            deck={currentWorkingDeckState}
+            popupType={popupState}
+            closePopup={closePopup}
+            addCard={addCard}
+          ></Popup> : ''
+      }
     </div>
   )
 }
