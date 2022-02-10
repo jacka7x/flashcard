@@ -2,7 +2,7 @@ import { getNewSpacingRight } from "../scheduling"
 
 describe('scheduling', () => {
 
-  test('returns spacing multipled by 1.4', () => {
+  test('Returns spacing multipled by 1.4', () => {
     expect(getNewSpacingRight(1000)).toBe(1400)
   })
 
