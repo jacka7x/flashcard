@@ -1,3 +1,5 @@
+PORT THIS TO JIRA
+
 TODO--------------------------------------------------------+
     >IMPLEMENT TESTS
     >Add current card edit feature (popup/form)
