@@ -1,4 +1,7 @@
 
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 interface Props {
   workingDeck: Deck_IF
   reviewDeck: Card_IF[]
@@ -12,15 +15,17 @@ interface AddCardButtonProps {
 }
 
 const AddCardButton = ( {onMouseUp}: AddCardButtonProps ) => {
-  return <div className="add-card-button" onMouseUp={onMouseUp}>
-
-  </div>
+  return <AddIcon sx={{fontSize: '2.4rem'}}
+    className="nav-button nav-add-card-button"
+    onMouseUp={onMouseUp}>
+  </AddIcon>
 }
 
 const DeleteCardButton = ( {onMouseUp}: AddCardButtonProps ) => {
-  return <div className="delete-card-button" onMouseUp={onMouseUp}>
-
-  </div>
+  return <DeleteIcon sx={{fontSize: '2rem'}}
+    className="nav-button nav-delete-card-button"
+    onMouseUp={onMouseUp}>
+  </DeleteIcon>
 }
 
 export const Navbar = ( 
@@ -28,12 +33,19 @@ export const Navbar = (
      deleteCard, openPopup}: Props ) => {
 
   return <div className='navbar'>
-      <AddCardButton 
-        onMouseUp={() => openPopup('addCard')}
-      ></AddCardButton>
-      <DeleteCardButton 
-        onMouseUp={() => deleteCard(workingDeck, reviewDeck[0])}
-      ></DeleteCardButton>
-      <p className='review-count'>{reviewCount}</p>
+      {/* MAKE INTO COMPONENT + CONTAINER*/}
+      <p className='nav-review-deck'>{workingDeck['name']}</p>
+      <p className='nav-review-count'>{reviewCount}</p>
+      
+      {/* MAKE CONTAINER ? */}
+      <div className='nav-button-container'>
+        <AddCardButton 
+          onMouseUp={() => openPopup('addCard')}
+        ></AddCardButton>
+        <DeleteCardButton 
+          onMouseUp={() => deleteCard(workingDeck, reviewDeck[0])}
+        ></DeleteCardButton>
+      </div>
+      
     </div>
 }

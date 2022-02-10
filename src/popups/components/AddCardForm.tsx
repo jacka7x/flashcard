@@ -27,21 +27,32 @@ interface Props {
                 onMouseUp={(event) => event.stopPropagation()}>
 
             <div className='form-container'>
+                <h2 className='form-title'>Add new card</h2>
 
                 <form onSubmit={(event) => submitNewCard(event)}>
-                    <label className='form label' htmlFor='front_text'>Front</label>
+                    <label
+                        className='form-label'
+                        htmlFor='front_text'
+                    >Front</label>
                     <textarea 
-                        className='form input front-text-input'
+                        className='form-input'
                         name='front_text'
                     />
 
-                    <label className='form-label' htmlFor='back_text'>Back</label>
+                    <label
+                        className='form-label'
+                        htmlFor='back_text'
+                    >Back</label>
                     <textarea
-                        className='form input back-text-input'
+                        className='form-input'
                         name='back_text'
                     />
 
-                    <input type='submit' value='Add Card'/>
+                    <input
+                        className='form-submit'
+                        type='submit'
+                        value='Add Card'
+                    />
                 </form>
             </div>
     </div>

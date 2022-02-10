@@ -14,10 +14,19 @@ iframe{display: none;}
   /* specific color settings */
   --background: white;
   --popup-background: #06030caf;
+
+  /* form styles */
   --popup-form-background: white;
+  --form-input-border: var(--_black);
+  --submit-button-text: white;
+  --submit-button-background: var(--_black);
+  --form-input-border-hover: var(--_orange);
+  --form-input-border-focus: var(--_orange);
+  --submit-button-background-active: var(--_green);
+  --submit-border-active: var(--_green);
 
   /* general */
-  --app-padding: 0.3rem;
+  --app-padding: 0.4rem;
   --app-border-rad: 0.6rem;
 }
 
@@ -55,21 +64,48 @@ body, html, #root {
 }
 
 .navbar {
-  flex: 4;
-  max-height: 4rem;
-  min-height: 3rem;;
+  flex: 0;
   width: 100%;
-  
-  border: 1px solid var(--_black);
-  border-radius: var(--app-border-rad);
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-.review-count {
+.nav-review-deck {
+  margin: 0 0 0 0;
+  font-size: 1.6rem;
+}
+
+.nav-review-count {
+  position: absolute;
+  padding: 0 0.6rem;
+  left: 50%;
+
+  color: white;
+  border-radius: 0.4rem;
+  background-color: var(--_purple);
+
+  transform: translateX(-50%);
   font-size: 2rem;
+}
+
+.nav-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.nav-button {
+  margin: 0 0 0 0.4rem;
+  font-size: 10rem;
+}
+
+.nav-add-card-button {
+  color: limegreen;
+}
+
+.nav-delete-card-button {
+  color: red;
 }
 
 .card {
@@ -174,18 +210,6 @@ body, html, #root {
   background-color: var(--_orange);
 }
 
-.add-card-button {
-  height: 2rem;
-  width: 2rem;
-  background-color: green;
-}
-
-.delete-card-button {
-  height: 2rem;
-  width: 2rem;
-  background-color: rgb(255, 0, 0);
-}
-
 .popup {
   position: fixed;
   top: 0;
@@ -201,11 +225,80 @@ body, html, #root {
 }
 
 .add-card-form {
-
   width: 80vw;
   height: 60vh;
 
   border-radius: var(--app-border-rad);
   background-color: var(--popup-form-background);
   box-shadow: 0px 0px 15px -3px white;
+
+  display: flex;
+  justify-content: center;
+}
+
+.form-container {
+  margin: 1rem 0 0 0;
+  height: 100%;
+  width: 92%;
+
+  /* border: 1px solid red; */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-title {
+  font-weight: 500;
+}
+
+.form-container form {
+  height: 100%;
+  margin: 1rem 0 0 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container .form-label {
+  font-weight: 500;
+  margin: 1rem 0 0 0;
+}
+
+.form-container .form-input {
+  margin: 0.2rem 0 0 0;
+  padding: 0.2rem;
+  width: 100%;
+
+  border: 1px solid var(--form-input-border);
+  border-radius: 3px;
+
+  text-align: center;
+  resize: none;
+}
+
+.form-container .form-input:focus {
+  outline: none;
+  border: 1px solid var(--form-input-border-focus);
+}
+
+.form-submit {
+  margin: auto 0 3rem 0;
+  height: 2rem;
+  width: 8rem;
+
+  color: var(--submit-button-text);
+  background-color: var(--submit-button-background);
+  border: 1px solid var(--form-input-border);
+  border-radius: var(--app-border-rad);
+}
+
+.form-submit:hover {
+  border: 2px solid var(--form-input-border-hover);
+}
+
+.form-submit:active {
+  background-color: var(--submit-button-background-active);
+  border: 2px solid var(--submit-border-active);
 }

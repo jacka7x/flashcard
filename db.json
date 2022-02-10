@@ -11,19 +11,63 @@
             "back_text": "고양이"
           },
           "review": {
-            "review_date": 1643802964036,
-            "spacing": 7000
+            "review_date": 1643889904482,
+            "spacing": 26891
           }
         },
         {
-          "id": "3848084031",
+          "id": "0857515340",
+          "card_text": {
+            "face_text": "fly",
+            "back_text": "날다"
+          },
+          "review": {
+            "review_date": 1643889890129,
+            "spacing": 19208
+          }
+        },
+        {
+          "id": "1523333763",
           "card_text": {
             "face_text": "tree",
             "back_text": "나무"
           },
           "review": {
-            "review_date": 1643803244190,
+            "review_date": 1643889892579,
+            "spacing": 19208
+          }
+        },
+        {
+          "id": "8184168336",
+          "card_text": {
+            "face_text": " elephant",
+            "back_text": " 코끼리"
+          },
+          "review": {
+            "review_date": 1643889881588,
             "spacing": 5000
+          }
+        },
+        {
+          "id": "6007238526",
+          "card_text": {
+            "face_text": " chopsticks",
+            "back_text": "젓가락"
+          },
+          "review": {
+            "review_date": 1643889884912,
+            "spacing": 9800
+          }
+        },
+        {
+          "id": "2040212217",
+          "card_text": {
+            "face_text": "fire",
+            "back_text": "불"
+          },
+          "review": {
+            "review_date": 1643889882058,
+            "spacing": 9800
           }
         }
       ]
