@@ -1,13 +1,16 @@
 import { generateUniqueID } from "./generateID"
 import { getCurrentUnixTime, getNewSpacingWrong } from "./scheduling"
 
-export const fetchDecksFromStorage = async (): Promise<Deck_IF[]> => {
-  console.log('Fetching from DB...')
-
-  const url: string = 'http://172.30.1.35:5000/deck_list'
-  const response: Response = await fetch(url)
-  const data: Deck_IF[] = await response.json()
-  return data
+export const fetchDecksFromStorage = async (): Promise<Deck_IF[] | null> => {
+  try {
+    const url: string = 'http://172.30.1.35:5000/deck_list'
+    const response: Response = await fetch(url)
+    const data: Deck_IF[] = await response.json()
+    return data
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 }
 
 export const pushDeckToStorage =
