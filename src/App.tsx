@@ -78,8 +78,6 @@ function App() {
   }, [currentReviewDeckState])
 
   const loadDeck = async (): Promise<void> => {
-
-    // change to return ALL decks (seperate function?)
     const decks: Deck_IF[] | undefined = await fetchDecksFromStorage()
     if(!decks[0]) return
     
@@ -94,8 +92,6 @@ function App() {
 
     setCurrentWorkingDeckState(newDeck)
     console.log(`Loaded ${decks[0]['name']} [${decks[0]['id']}].`)
-
-    // add return to stop reviewing of cards until deck is loaded
   }
 
   const updateCurrentReviewDeck = (): void => {

@@ -69,6 +69,17 @@
             "review_date": 1643889882058,
             "spacing": 9800
           }
+        },
+        {
+          "id": "7556704174",
+          "card_text": {
+            "face_text": "무슨",
+            "back_text": "what"
+          },
+          "review": {
+            "review_date": 1645620236301,
+            "spacing": 5000
+          }
         }
       ]
     }
