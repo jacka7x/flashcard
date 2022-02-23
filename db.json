@@ -80,6 +80,17 @@
             "review_date": 1645620236301,
             "spacing": 5000
           }
+        },
+        {
+          "id": "1182380477",
+          "card_text": {
+            "face_text": "크다",
+            "back_text": "to be big"
+          },
+          "review": {
+            "review_date": 1645620781107,
+            "spacing": 5000
+          }
         }
       ]
     }
