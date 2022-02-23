@@ -224,6 +224,22 @@ body, html, #root {
   justify-content: center;
 }
 
+.popup-container {
+  position: fixed;
+}
+
+.close-popup {
+  margin: 0.3rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.close-popup:hover {
+  color: red;
+  filter: drop-shadow(0px 0px 1px var(--_black));
+}
+
 .add-card-form {
   width: 80vw;
   height: 60vh;
