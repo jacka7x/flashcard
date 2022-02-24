@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 interface Props {
   workingDeck: Deck_IF
-  reviewDeck: Card_IF[]
+  reviewPile: Card_IF[]
   reviewCount: number
   deleteCard: (deck: Deck_IF, oldCard: Card_IF | undefined) => Promise<void>
   openPopup: (popupType: Popups) => void
@@ -29,7 +29,7 @@ const DeleteCardButton = ( {onMouseUp}: AddCardButtonProps ) => {
 }
 
 export const Navbar = ( 
-  {workingDeck, reviewDeck, reviewCount,
+  {workingDeck, reviewPile, reviewCount,
      deleteCard, openPopup}: Props ) => {
 
   return <div className='navbar'>
@@ -43,7 +43,7 @@ export const Navbar = (
           onMouseUp={() => openPopup('addCard')}
         ></AddCardButton>
         <DeleteCardButton 
-          onMouseUp={() => deleteCard(workingDeck, reviewDeck[0])}
+          onMouseUp={() => deleteCard(workingDeck, reviewPile[0])}
         ></DeleteCardButton>
       </div>
       

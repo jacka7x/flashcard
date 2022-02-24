@@ -1,8 +1,7 @@
 
-// from deck
+// components
 import { Deck } from './deck/Deck'
-
-// from popups
+import { Decklist } from './decklist/Decklist'
 import { Popup } from './popups/Popup'
 
 // from general/scripts
@@ -30,16 +29,17 @@ import { useState, useEffect } from 'react'
 const reviewUpdatePeriod = 200
 
 function App() {
-  // console.log('rendered')
+  const [allDecksState, setAllDecksState]
+    = useState<Deck_IF[]>()
 
   const [currentWorkingDeckState, setCurrentWorkingDeckState]
-    = useState<Deck_IF>()
+    = useState<Deck_IF | null>(null)
 
-  const [currentTotalDeckState, setCurrentTotalDeckState]
+  const [currentTotalPileState, setCurrentTotalPileState]
     = useState<Card_IF[]>([])
 
   // setReviewDeckState should ONLY be called in updateReviewDeck()
-  const [currentReviewDeckState, setCurrentReviewDeckState]
+  const [currentReviewPileState, setCurrentReviewPileState]
     = useState<Card_IF[]>([])
 
   const [currentReviewCountState, setCurrentReviewCountState]
@@ -50,22 +50,22 @@ function App() {
 
   // inital loading of decks [some ajustments for testing]
   useEffect(() => {
-    loadDeck()
+    // loadDeck()
   }, [])
 
   // update total deck when working deck is changed
   useEffect(() => {
     if (!currentWorkingDeckState) return
-    setCurrentTotalDeckState(currentWorkingDeckState['cards'])
+    setCurrentTotalPileState(currentWorkingDeckState['cards'])
   }, [currentWorkingDeckState])
 
   // update review deck when total deck is changed
   useEffect(() => {
     if(currentWorkingDeckState) {
-      pushDeckToStorage(currentWorkingDeckState, currentTotalDeckState)
+      pushDeckToStorage(currentWorkingDeckState, currentTotalPileState)
     }
     updateCurrentReviewDeck()
-  }, [currentTotalDeckState])
+  }, [currentTotalPileState])
 
   // update review deck periodically
   useInterval(() => {
@@ -74,8 +74,8 @@ function App() {
 
   // update current review count when review deck is changed
   useEffect(() => {
-    setCurrentReviewCountState(currentReviewDeckState.length)
-  }, [currentReviewDeckState])
+    setCurrentReviewCountState(currentReviewPileState.length)
+  }, [currentReviewPileState])
 
   const loadDeck = async (): Promise<void> => {
     const decks: Deck_IF[] | undefined = await fetchDecksFromStorage()
@@ -96,10 +96,10 @@ function App() {
 
   const updateCurrentReviewDeck = (): void => {
     const reviewDeck: Card_IF[]
-      = getReviewableCards(currentTotalDeckState)
+      = getReviewableCards(currentTotalPileState)
     const sortedReviewDeck = sortByReview(reviewDeck)
     // setReviewDeckState should NOT be called elsewhere
-    setCurrentReviewDeckState(sortedReviewDeck)
+    setCurrentReviewPileState(sortedReviewDeck)
   }
 
   const getReviewableCards = (deck: Card_IF[]): Card_IF[] => {
@@ -112,7 +112,7 @@ function App() {
   }
 
   const updateCard = (answer: Answer, card: Card_IF): void => {
-    if (!currentTotalDeckState) return
+    if (!currentTotalPileState) return
 
     const nowUnix: number = getCurrentUnixTime()
     const newSpacing: number = (answer === 'right') ?
@@ -130,18 +130,18 @@ function App() {
 
     // find reviewd card by ID 
     const cardIndex: number 
-      = currentTotalDeckState.findIndex( (cardTotal) => {
+      = currentTotalPileState.findIndex( (cardTotal) => {
         return cardTotal['id'] === card['id']
     })
 
     // CHECK THIS WORKS PROPERLY
     const newCurrentTotalDeckState: Card_IF[] = [
-        ...currentTotalDeckState.slice(0, cardIndex),
+        ...currentTotalPileState.slice(0, cardIndex),
         updatedCard,
-        ...currentTotalDeckState.slice(cardIndex + 1)
+        ...currentTotalPileState.slice(cardIndex + 1)
       ]
 
-    setCurrentTotalDeckState(newCurrentTotalDeckState)
+    setCurrentTotalPileState(newCurrentTotalDeckState)
   }
 
   const addCard =
@@ -168,18 +168,26 @@ function App() {
     setPopupState(null)
   }
 
+  const selectDeck = (deckId: string): void => {
+    console.log(deckId)
+  }
+
   return (
     <div className="App">
       {
         currentWorkingDeckState ? 
           <Deck
             workingDeck={currentWorkingDeckState} 
-            reviewDeck={currentReviewDeckState}
+            reviewPile={currentReviewPileState}
             reviewCount={currentReviewCountState}
             updateCard={updateCard}
             deleteCard={deleteCard}
             openPopup={openPopup}
-          ></Deck> : ''
+          ></Deck> :
+          <Decklist
+            allDecks={allDecksState}
+            selectDeck={selectDeck}
+          ></Decklist>
       }
       {
         popupState ? 

@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 
 interface Props {
   workingDeck: Deck_IF
-  reviewDeck: Card_IF[]
+  reviewPile: Card_IF[]
   reviewCount: number
   updateCard: (answer: Answer, card: Card_IF) => void
   deleteCard: (deck: Deck_IF, oldCard: Card_IF | undefined) => Promise<void>
@@ -30,7 +30,7 @@ const noCard: Card_IF = {
 }
   
 export const Deck = ( 
-  {workingDeck, reviewDeck, reviewCount,
+  {workingDeck, reviewPile, reviewCount,
     updateCard, deleteCard, openPopup}: Props ) => {
 
   const [currentCardState, setCurrentCardState] =
@@ -54,16 +54,16 @@ export const Deck = (
 
   // update current card [ASSUMES SORTED BY REVEIW DATE]
   useEffect(() => {
-    setCurrentCardState(reviewDeck[0])
-  }, [reviewDeck])
+    setCurrentCardState(reviewPile[0])
+  }, [reviewPile])
 
 
   return (
-      <div className="App">
+      <div className='App'>
   
         <Navbar
           workingDeck={workingDeck}
-          reviewDeck={reviewDeck}
+          reviewPile={reviewPile}
           reviewCount={reviewCount}
           deleteCard={deleteCard}
           openPopup={openPopup}

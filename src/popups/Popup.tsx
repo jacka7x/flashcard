@@ -3,7 +3,7 @@ import { AddCardForm } from './components/AddCardForm'
 import CloseIcon from '@mui/icons-material/Close'
 
 interface Props {
-  deck: Deck_IF | undefined
+  deck: Deck_IF | null
   popupType: Popups
   closePopup: () => void
   addCard: (deck: Deck_IF, newCardText: Card_Text) => Promise<void>
