@@ -6,12 +6,24 @@ interface Props {
   workingDeck: Deck_IF
   reviewPile: Card_IF[]
   reviewCount: number
+  goToSelectDeck: () => void
   deleteCard: (deck: Deck_IF, oldCard: Card_IF | undefined) => Promise<void>
   openPopup: (popupType: Popups) => void
 }
 
+interface SelectDeckButtonProps {
+  workingDeck: Deck_IF
+  onClick: () => void
+}
+
 interface AddCardButtonProps {
   onMouseUp: () => void
+}
+
+const SelectDeckButton = ( {workingDeck, onClick}: SelectDeckButtonProps ) => {
+  return <div className='nav-review-deck' onClick={onClick}>
+    {workingDeck['name']}
+  </div>
 }
 
 const AddCardButton = ( {onMouseUp}: AddCardButtonProps ) => {
@@ -30,14 +42,16 @@ const DeleteCardButton = ( {onMouseUp}: AddCardButtonProps ) => {
 
 export const Navbar = ( 
   {workingDeck, reviewPile, reviewCount,
-     deleteCard, openPopup}: Props ) => {
+    goToSelectDeck, deleteCard, openPopup}: Props ) => {
 
   return <div className='navbar'>
-      {/* MAKE INTO COMPONENT + CONTAINER*/}
-      <p className='nav-review-deck'>{workingDeck['name']}</p>
+      <SelectDeckButton
+        workingDeck={workingDeck}
+        onClick={goToSelectDeck}
+      ></SelectDeckButton>
+
       <p className='nav-review-count'>{reviewCount}</p>
       
-      {/* MAKE CONTAINER ? */}
       <div className='nav-button-container'>
         <AddCardButton 
           onMouseUp={() => openPopup('addCard')}

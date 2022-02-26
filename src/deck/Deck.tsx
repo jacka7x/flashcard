@@ -11,6 +11,7 @@ interface Props {
   workingDeck: Deck_IF
   reviewPile: Card_IF[]
   reviewCount: number
+  goToSelectDeck: () => void
   updateCard: (answer: Answer, card: Card_IF) => void
   deleteCard: (deck: Deck_IF, oldCard: Card_IF | undefined) => Promise<void>
   openPopup: (popupType: Popups) => void
@@ -31,7 +32,7 @@ const noCard: Card_IF = {
   
 export const Deck = ( 
   {workingDeck, reviewPile, reviewCount,
-    updateCard, deleteCard, openPopup}: Props ) => {
+    goToSelectDeck, updateCard, deleteCard, openPopup}: Props ) => {
 
   const [currentCardState, setCurrentCardState] =
     useState<Card_IF | undefined>(undefined)
@@ -57,14 +58,13 @@ export const Deck = (
     setCurrentCardState(reviewPile[0])
   }, [reviewPile])
 
-
   return (
-      <div className='App'>
-  
+      <div className='deck'>
         <Navbar
           workingDeck={workingDeck}
           reviewPile={reviewPile}
           reviewCount={reviewCount}
+          goToSelectDeck={goToSelectDeck}
           deleteCard={deleteCard}
           openPopup={openPopup}
         ></Navbar>

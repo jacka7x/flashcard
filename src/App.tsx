@@ -198,6 +198,10 @@ function App() {
     }
   }
 
+  const goToSelectDeck = (): void => {
+    setCurrentWorkingDeckState(null)
+  }
+
   return (
     <div className="App">
       {
@@ -206,6 +210,7 @@ function App() {
             workingDeck={currentWorkingDeckState} 
             reviewPile={currentReviewPileState}
             reviewCount={currentReviewCountState}
+            goToSelectDeck={goToSelectDeck}
             updateCard={updateCard}
             deleteCard={deleteCard}
             openPopup={openPopup}

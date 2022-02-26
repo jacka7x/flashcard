@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 
 // Change this to new type DeckListData -> update and pass from app
 interface Props {
-  allDecksState: Deck_IF[]
+  allDecksState: Deck_IF[] | undefined
   getDeckInfo: () => DeckInfo[] | null 
   selectDeck: (deckId: string) => void
 }
