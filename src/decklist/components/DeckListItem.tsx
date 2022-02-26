@@ -1,11 +1,11 @@
 
 interface Props {
-  deck: Deck_IF
+  deckInfoItem: DeckInfo
   onClick: () => void
 }
 
-export const DeckListItem = ( { deck, onClick }: Props ) => {
+export const DeckListItem = ( { deckInfoItem, onClick }: Props ) => {
   return <div className='decklist-item' onClick={onClick}>
-    {deck['name']}
+    {deckInfoItem['name']}
   </div>
 }

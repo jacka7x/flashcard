@@ -27,6 +27,12 @@ interface Deck_IF {
   readonly cards: Card_IF[]
 }
 
+interface DeckInfo {
+  readonly name: string
+  readonly id: string
+  readonly review_count: number
+}
+
 type Popups = Reaonly<null | 'addCard'>
 
 type CardFace = Readonly<'front' | 'back'>
