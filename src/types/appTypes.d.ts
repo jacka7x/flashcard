@@ -7,6 +7,11 @@ type DeepReadonly<T> = {
 type Card_IF_ = DeepReadonly<Card_IF_>
 type Deck_IF_ = DeepReadonly<Deck_IF_>
 
+interface Card_Text {
+  readonly face_text: string
+  readonly back_text: string
+}
+
 interface Card_IF {
   readonly card_text: Card_Text,
   readonly review: {
@@ -14,11 +19,6 @@ interface Card_IF {
     readonly spacing: number
   },
   readonly id: string
-}
-
-interface Card_Text {
-  readonly face_text: string
-  readonly back_text: string
 }
 
 interface Deck_IF {

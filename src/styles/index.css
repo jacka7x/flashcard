@@ -370,13 +370,33 @@ body, html, #root {
 
 .decklist-item {
   margin: 0 0 0.6rem 0;
-  padding: 0 1rem;
+  padding: 0 0 0 1rem;
   height: 3rem;
 
   color: var(--decklist-text);
   background-color: var(--decklist-item-background);
   border-radius: 0.6rem;
+  box-shadow: 2px 2px 1px 0 var(--_black);
 
   display: flex;
-  align-items: center
+  align-items: center;
+  justify-content: space-between;
+}
+
+.decklist-item-name {
+  font-weight: 700;
+}
+
+.decklist-item-review {
+  height: 100%;
+  width: 3rem;
+
+  font-size: 1.2rem;
+  color: white;
+  border-radius: 0 0.6rem 0.6rem 0;
+  background-color: var(--_purple);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,5 +1,5 @@
-import { generateUniqueID } from "./generateID"
-import { getCurrentUnixTime, getNewSpacingWrong } from "./scheduling"
+import { generateUniqueID } from './generateID'
+import { getCurrentUnixTime, getNewSpacingWrong } from './scheduling'
 
 export const fetchDecksFromStorage = async (): Promise<Deck_IF[] | null> => {
   try {
@@ -25,7 +25,7 @@ export const pushDeckToStorage =
 
   const response: Response = await fetch(url, {
     method: 'PUT',
-    headers: {"Content-Type": "application/json"},
+    headers: {'Content-Type': 'application/json'},
     body: body
   })
 
@@ -33,8 +33,8 @@ export const pushDeckToStorage =
   return response['status']
 }
 
-export const addCardToDeckInStorage = async (deck: Deck_IF, newCardText: Card_Text): Promise<void> => {
-  
+export const addCardToDeckInStorage =
+  async (deck: Deck_IF, newCardText: Card_Text): Promise<void> => {
 
   const newCard: Card_IF = {
       id: generateUniqueID(),
@@ -53,11 +53,12 @@ export const addCardToDeckInStorage = async (deck: Deck_IF, newCardText: Card_Te
 
 export const deleteCardFromDeckInStorage =
   async (deck: Deck_IF, oldCard: Card_IF): Promise<void> => {
-  
-  const newCards: Card_IF[] = deck['cards'].filter( (card) => {
+
+  const newCards: Card_IF[] = deck['cards'].filter((card) => {
     return card['id'] !== oldCard['id']
   })
 
   await pushDeckToStorage(deck, newCards)
-  console.log(`Removed ${oldCard['card_text']['face_text']} from ${deck['name']}.`)
+  console.log(`Removed ${
+    oldCard['card_text']['face_text']} from ${deck['name']}.`)
 }

@@ -2,6 +2,7 @@
   "root": true,
 
   "parser": "@typescript-eslint/parser",
+  // "parser": "@babel/eslint-parser",
   "parserOptions": {
       "project": "./tsconfig.json"
   },
@@ -14,7 +15,31 @@
 
   "rules": {
     "@typescript-eslint/no-inferrable-types": 0,
+    "@typescript-eslint/quotes": [
+      2, "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-indent": [2, 2],
+    "jsx-quotes": [2, "prefer-single"],
+    "react/jsx-curly-brace-presence": [
+      2, { "props": "always", "children": "always" }],
+
     "react/react-in-jsx-scope": 0,
+    "react/function-component-definition": 0,
+    "react/jsx-filename-extension": 0,
+    "react/jsx-no-bind": 0,
+    "react/jsx-max-depth": 0,
+    "react/jsx-sort-props": 0,
+    "react/no-multi-comp": 0,
+    
+
+    "no-magic-numbers": [2, {"ignore": [0, 1]}],
+
     "linebreak-style": 0,
     "quotes": 0,
     "capitalized-comments": 0,
@@ -33,7 +58,16 @@
     "quote-props": 0,
     "sort-keys": 0,
     "consistent-return": 0,
-    "object-shorthand": 0
+    "object-shorthand": 0,
+    "array-element-newline": 0,
+    "curly": 0,
+    "no-plusplus": 0,
+    "max-lines-per-function": 0,
+    "no-ternary": 0,
+    "no-nested-ternary": 0,
+    "no-extra-parens": 0,
+    "max-statements": 0,
+    "no-use-before-define": 0
   },
 
   "settings": {

@@ -29,13 +29,12 @@ const noCard: Card_IF = {
   },
   id: '1234567890'
 }
-  
-export const Deck = ( 
-  {workingDeck, reviewPile, reviewCount,
-    goToSelectDeck, updateCard, deleteCard, openPopup}: Props ) => {
+
+export const Deck = ({workingDeck, reviewPile, reviewCount,
+    goToSelectDeck, updateCard, deleteCard, openPopup}: Props) => {
 
   const [currentCardState, setCurrentCardState] =
-    useState<Card_IF | undefined>(undefined)
+    useState<Card_IF | undefined>()
 
   const [cardFace, setCardFace] = useState<CardFace>('front')
 
@@ -48,7 +47,7 @@ export const Deck = (
   }
 
   const processAnswer = (answer: Answer): void => {
-    if(!currentCardState) return
+    if (!currentCardState) return
     updateCard(answer, currentCardState)
     nextCard()
   }
@@ -59,27 +58,29 @@ export const Deck = (
   }, [reviewPile])
 
   return (
-      <div className='deck'>
-        <Navbar
-          workingDeck={workingDeck}
-          reviewPile={reviewPile}
-          reviewCount={reviewCount}
-          goToSelectDeck={goToSelectDeck}
-          deleteCard={deleteCard}
-          openPopup={openPopup}
-        ></Navbar>
-  
-        <Card
-          card={currentCardState ? currentCardState : noCard}
-          cardFace={cardFace}
-        ></Card>
-        
-        <CardButtons
-          reviewCount={reviewCount}
-          cardFace={cardFace}
-          showAnswer={showAnswer}
-          answer={processAnswer}
-        ></CardButtons> 
-      </div>
+    <div className={'deck'}>
+      <Navbar
+        workingDeck={workingDeck}
+        reviewPile={reviewPile}
+        reviewCount={reviewCount}
+        goToSelectDeck={goToSelectDeck}
+        deleteCard={deleteCard}
+        openPopup={openPopup}
+      />
+
+      <Card
+        card={currentCardState
+? currentCardState
+: noCard}
+        cardFace={cardFace}
+      />
+
+      <CardButtons
+        reviewCount={reviewCount}
+        cardFace={cardFace}
+        showAnswer={showAnswer}
+        answer={processAnswer}
+      />
+    </div>
   )
 }

@@ -2,6 +2,8 @@
 import { AddCardForm } from './components/AddCardForm'
 import CloseIcon from '@mui/icons-material/Close'
 
+/* eslint react/forbid-component-props: 0 */
+
 interface Props {
   deck: Deck_IF | null
   popupType: Popups
@@ -13,28 +15,38 @@ interface CloseButtonProps {
   onMouseUp: () => void
 }
 
-const CloseButton = ( {onMouseUp}: CloseButtonProps ) => {
-  return <CloseIcon sx={{fontSize: '1.4rem'}}
-    className="close-popup"
-    onMouseUp={onMouseUp}>
-  </CloseIcon>
+const CloseButton = ({onMouseUp}: CloseButtonProps) => {
+  return (
+    <CloseIcon
+      sx={{fontSize: '1.4rem'}}
+      className={'close-popup'}
+      onMouseUp={onMouseUp}
+    />
+  )
 }
 
-export const Popup = ( {deck, popupType, closePopup, addCard}: Props ) => {
+export const Popup = ({deck, popupType, closePopup, addCard}: Props) => {
 
-  return <div className='popup' onMouseUp={() => closePopup()}>
-      <div className='popup-container'>
+  return (
+    <div
+      className={'popup'}
+      onMouseUp={() => closePopup()}
+    >
+
+      <div className={'popup-container'}>
         <CloseButton
           onMouseUp={() => closePopup()}
-        ></CloseButton>
+        />
+
         {
-          popupType === 'addCard' ? 
-            <AddCardForm
-              deck={deck}
-              addCard={addCard}
-            ></AddCardForm> : ''
+          popupType === 'addCard'
+            ? <AddCardForm
+                deck={deck}
+                addCard={addCard}
+              />
+            : ''
         }
-      </div>  
+      </div>
     </div>
+  )
 }
-  
