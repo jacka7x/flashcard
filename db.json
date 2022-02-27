@@ -38,6 +38,17 @@
           }
         },
         {
+          "id": "6007238526",
+          "card_text": {
+            "face_text": " chopsticks",
+            "back_text": "젓가락"
+          },
+          "review": {
+            "review_date": 1645969013667,
+            "spacing": 7000
+          }
+        },
+        {
           "id": "2040212217",
           "card_text": {
             "face_text": "fire",
