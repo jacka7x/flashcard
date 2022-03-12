@@ -10,21 +10,24 @@ import {
   getNewSpacingRight,
   getNewSpacingWrong
 } from './general/scripts/scheduling'
-import {
-  useInterval
-} from './general/scripts/useInterval'
+
+import { useInterval } from './general/scripts/useInterval'
+
 import {
   fetchDecksFromStorage,
   pushDeckToStorage,
   addCardToDeckInStorage,
   deleteCardFromDeckInStorage
 } from './general/scripts/deckStorage'
-import {
-  sortByReview
-} from './general/scripts/sortByReview'
+
+import { sortByReview } from './general/scripts/sortByReview'
+
+// from general/api
+import { getAllDecks } from './general/api/deckAPI'
 
 // react imports
 import { useState, useEffect } from 'react'
+
 
 /* eslint func-style: 0 */
 // buggy when using arrow function
@@ -97,6 +100,8 @@ const App = () => {
     } catch (error) {
       console.error(error)
     }
+
+    console.log(await getAllDecks())
   }
 
   const getDeckInfo = (): DeckInfo[] | null => {

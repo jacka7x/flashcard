@@ -2,6 +2,7 @@
 import { DeckListItem } from './components/DeckListItem'
 import { NewDeckButton } from './components/NewDeckButton'
 import { generateUniqueID } from '../general/scripts/generateID'
+import { createNewDeck } from '../general/api/deckAPI'
 
 import { useState, useEffect } from 'react'
 
@@ -13,7 +14,7 @@ interface Props {
 }
 
 export const Decklist = ({allDecksState,
-   getDeckInfo, selectDeck }: Props) => {
+  getDeckInfo, selectDeck }: Props) => {
 
   const [deckListInfoState, setDeckListInfoState] =
     useState<DeckInfo[] | null>(null)
@@ -23,13 +24,25 @@ export const Decklist = ({allDecksState,
     setDeckListInfoState(info)
   }, [allDecksState])
 
+  const addDeck = async (deckName: string): Promise<void> => {
+    try {
+      await createNewDeck(deckName)
+      console.log(deckName)
+      // show GUI success
+    } catch (error) {
+      console.error(error)
+      // show GUI error
+    }
+  }
+
   return (
     <div className={'decklist'}>
-      <h1 className={'decklist-title'}>
-        {'Select Deck'}
-      </h1>
-
       <div className={'decklist-list'}>
+
+        <h1 className={'decklist-title'}>
+          {'Select Deck'}
+        </h1>
+
         {
           deckListInfoState
             ? deckListInfoState.map((item) => (
@@ -43,7 +56,9 @@ export const Decklist = ({allDecksState,
         }
       </div>
 
-      <NewDeckButton />
+      <NewDeckButton
+        addDeck={addDeck}
+      />
     </div>
   )
 }

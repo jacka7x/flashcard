@@ -1,6 +1,7 @@
 node_modules
 public
-src/types/react-app-env.d.ts
+
+**/*.d.ts
 
 *CHECK THIS LATER
 src/test/analytics/reportWebVitals.ts

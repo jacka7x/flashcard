@@ -2,18 +2,21 @@
   "root": true,
 
   "parser": "@typescript-eslint/parser",
-  // "parser": "@babel/eslint-parser",
+
   "parserOptions": {
       "project": "./tsconfig.json"
   },
   
   "plugins": [
+    "prettier",
     "@typescript-eslint",
     "functional",
     "react"
   ],
 
   "rules": {
+    "prettier/prettier": "error",
+
     "@typescript-eslint/no-inferrable-types": 0,
     "@typescript-eslint/quotes": [
       2, "single",
@@ -37,7 +40,6 @@
     "react/jsx-sort-props": 0,
     "react/no-multi-comp": 0,
     
-
     "no-magic-numbers": [2, {"ignore": [0, 1]}],
 
     "linebreak-style": 0,
@@ -78,6 +80,7 @@
 
   "extends": [
     "eslint:all",
+    "prettier",
     "plugin:react/all",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
