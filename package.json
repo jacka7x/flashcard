@@ -31,7 +31,9 @@
     "eject": "react-scripts eject",
     "db": "json-server --host 172.30.1.35 --watch db.json --port 5000",
     "lint": "eslint . --ext .ts --ext .tsx",
-    "nibble": "eslint-nibble . --ext .ts --ext .tsx"
+    "nibble": "eslint-nibble . --ext .ts --ext .tsx",
+    "format": "npx prettier --write src/",
+    "fl": "npm run format && npm run lint"
   },
   "eslintConfig": {
     "extends": [

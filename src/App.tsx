@@ -1,4 +1,3 @@
-
 // components
 import { Deck } from './deck/Deck'
 import { Decklist } from './decklist/Decklist'
@@ -28,11 +27,9 @@ import { getAllDecks } from './general/api/deckAPI'
 // react imports
 import { useState, useEffect } from 'react'
 
-
 /* eslint func-style: 0 */
 // buggy when using arrow function
 const App = () => {
-
   /* eslint func-style: 2 */
 
   // dynamically update to period to next review!!
@@ -40,18 +37,19 @@ const App = () => {
   const reviewUpdatePeriod = 200
 
   // all decks states
-  const [allDecksState, setAllDecksState] =
-    useState<Deck_IF[]>()
+  const [allDecksState, setAllDecksState] = useState<Deck_IF[]>()
 
   // current deck states
   const [currentWorkingDeckState, setCurrentWorkingDeckState] =
     useState<Deck_IF | null>(null)
 
-  const [currentTotalPileState, setCurrentTotalPileState] =
-    useState<Card_IF[]>([])
+  const [currentTotalPileState, setCurrentTotalPileState] = useState<Card_IF[]>(
+    []
+  )
 
-  const [currentReviewPileState, setCurrentReviewPileState] =
-    useState<Card_IF[]>([])
+  const [currentReviewPileState, setCurrentReviewPileState] = useState<
+    Card_IF[]
+  >([])
 
   const [currentReviewCountState, setCurrentReviewCountState] =
     useState<number>(0)
@@ -79,7 +77,7 @@ const App = () => {
 
   // update review deck periodically
   useInterval(() => {
-      updateCurrentReviewDeck()
+    updateCurrentReviewDeck()
   }, reviewUpdatePeriod)
 
   // update current review count when review deck is changed
@@ -93,10 +91,9 @@ const App = () => {
       if (!decks) throw new Error('No decks found.')
 
       setAllDecksState(decks)
-      console.log(`Loaded ${decks.length} deck${
-        decks.length === 1
-          ? ''
-          : 's'}.`)
+      console.log(
+        `Loaded ${decks.length} deck${decks.length === 1 ? '' : 's'}.`
+      )
     } catch (error) {
       console.error(error)
     }
@@ -119,8 +116,7 @@ const App = () => {
   }
 
   const updateCurrentReviewDeck = (): void => {
-    const reviewDeck: Card_IF[] =
-      getReviewableCards(currentTotalPileState)
+    const reviewDeck: Card_IF[] = getReviewableCards(currentTotalPileState)
     const sortedReviewDeck = sortByReview(reviewDeck)
     // setReviewDeckState should NOT be called elsewhere
     setCurrentReviewPileState(sortedReviewDeck)
@@ -129,8 +125,9 @@ const App = () => {
   const getReviewableCards = (deck: Card_IF[]): Card_IF[] => {
     const unixTime = getCurrentUnixTime()
 
-    const filteredDeck =
-      deck.filter((card) => card['review']['review_date'] < unixTime)
+    const filteredDeck = deck.filter(
+      (card) => card['review']['review_date'] < unixTime
+    )
 
     return filteredDeck
   }
@@ -139,9 +136,10 @@ const App = () => {
     if (!currentTotalPileState) return
 
     const nowUnix: number = getCurrentUnixTime()
-    const newSpacing: number = (answer === 'right')
-      ? getNewSpacingRight(card['review']['spacing'])
-      : getNewSpacingWrong()
+    const newSpacing: number =
+      answer === 'right'
+        ? getNewSpacingRight(card['review']['spacing'])
+        : getNewSpacingWrong()
 
     // new object for updated card
     const updatedCard: Card_IF = {
@@ -153,30 +151,32 @@ const App = () => {
     }
 
     // find reviewd card by ID
-    const cardIndex: number =
-      currentTotalPileState.findIndex((cardTotal) => {
-        return cardTotal['id'] === card['id']
+    const cardIndex: number = currentTotalPileState.findIndex((cardTotal) => {
+      return cardTotal['id'] === card['id']
     })
 
     // CHECK THIS WORKS PROPERLY
     const newCurrentTotalDeckState: Card_IF[] = [
-        ...currentTotalPileState.slice(0, cardIndex),
-        updatedCard,
-        ...currentTotalPileState.slice(cardIndex + 1)
-      ]
+      ...currentTotalPileState.slice(0, cardIndex),
+      updatedCard,
+      ...currentTotalPileState.slice(cardIndex + 1)
+    ]
 
     setCurrentTotalPileState(newCurrentTotalDeckState)
   }
 
-  const addCard =
-    async (deck: Deck_IF, newCardText: Card_Text): Promise<void> => {
-
+  const addCard = async (
+    deck: Deck_IF,
+    newCardText: Card_Text
+  ): Promise<void> => {
     await addCardToDeckInStorage(deck, newCardText)
     loadDecks()
   }
 
-  const deleteCard =
-    async (deck: Deck_IF, card: (Card_IF | undefined)): Promise<void> => {
+  const deleteCard = async (
+    deck: Deck_IF,
+    card: Card_IF | undefined
+  ): Promise<void> => {
     if (card) {
       await deleteCardFromDeckInStorage(deck, card)
       loadDecks()
@@ -197,8 +197,7 @@ const App = () => {
     try {
       if (!allDecksState) throw new Error('Decks not found.')
 
-      const selectedDeck: Deck_IF | undefined =
-        allDecksState.find((deck) => {
+      const selectedDeck: Deck_IF | undefined = allDecksState.find((deck) => {
         return deck['id'] === deckId
       })
 
@@ -218,38 +217,36 @@ const App = () => {
 
   return (
     <div className={'App'}>
-      {
-        currentWorkingDeckState
-          ? <Deck
-              workingDeck={currentWorkingDeckState}
-              reviewPile={currentReviewPileState}
-              reviewCount={currentReviewCountState}
-              goToSelectDeck={goToSelectDeck}
-              updateCard={updateCard}
-              deleteCard={deleteCard}
-              openPopup={openPopup}
-            />
-          : <Decklist
-              allDecksState={allDecksState}
-              getDeckInfo={getDeckInfo}
-              selectDeck={selectDeck}
-            />
-      }
+      {currentWorkingDeckState ? (
+        <Deck
+          workingDeck={currentWorkingDeckState}
+          reviewPile={currentReviewPileState}
+          reviewCount={currentReviewCountState}
+          goToSelectDeck={goToSelectDeck}
+          updateCard={updateCard}
+          deleteCard={deleteCard}
+          openPopup={openPopup}
+        />
+      ) : (
+        <Decklist
+          allDecksState={allDecksState}
+          getDeckInfo={getDeckInfo}
+          selectDeck={selectDeck}
+        />
+      )}
 
-      {
-        popupState
-          ? (
-            <Popup
-              deck={currentWorkingDeckState}
-              popupType={popupState}
-              closePopup={closePopup}
-              addCard={addCard}
-            />
-          )
-          : ''
-      }
+      {popupState ? (
+        <Popup
+          deck={currentWorkingDeckState}
+          popupType={popupState}
+          closePopup={closePopup}
+          addCard={addCard}
+        />
+      ) : (
+        ''
+      )}
     </div>
   )
 }
 
-export default App;
+export default App

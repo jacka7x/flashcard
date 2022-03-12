@@ -1,10 +1,9 @@
-import { getNewSpacingRight } from "../scheduling"
+import { getNewSpacingRight } from '../scheduling'
 
 /* eslint no-magic-numbers: 0 */
 /* eslint @typescript-eslint/quotes: 0 */
 
 describe('scheduling', () => {
-
   test('Returns spacing multipled by 1.4', () => {
     expect(getNewSpacingRight(1000)).toBe(1400)
   })
@@ -30,8 +29,9 @@ describe('scheduling', () => {
     })
 
     test('Console.error [0] for input of 0', () => {
-      expect(consoleOutput[0]?.toString()).
-        toEqual("Error: Card spacing is negative or zero [0]")
+      expect(consoleOutput[0]?.toString()).toEqual(
+        'Error: Card spacing is negative or zero [0]'
+      )
     })
   })
 
@@ -47,8 +47,9 @@ describe('scheduling', () => {
     })
 
     test('Console.error [0] for input of -1', () => {
-      expect(consoleOutput[0]?.toString()).
-        toEqual("Error: Card spacing is negative or zero [-1]")
+      expect(consoleOutput[0]?.toString()).toEqual(
+        'Error: Card spacing is negative or zero [-1]'
+      )
     })
   })
 })

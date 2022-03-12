@@ -1,4 +1,3 @@
-
 import { DeckListItem } from './components/DeckListItem'
 import { NewDeckButton } from './components/NewDeckButton'
 import { generateUniqueID } from '../general/scripts/generateID'
@@ -13,11 +12,10 @@ interface Props {
   selectDeck: (deckId: string) => void
 }
 
-export const Decklist = ({allDecksState,
-  getDeckInfo, selectDeck }: Props) => {
-
-  const [deckListInfoState, setDeckListInfoState] =
-    useState<DeckInfo[] | null>(null)
+export const Decklist = ({ allDecksState, getDeckInfo, selectDeck }: Props) => {
+  const [deckListInfoState, setDeckListInfoState] = useState<DeckInfo[] | null>(
+    null
+  )
 
   useEffect(() => {
     const info: DeckInfo[] | null = getDeckInfo()
@@ -38,27 +36,20 @@ export const Decklist = ({allDecksState,
   return (
     <div className={'decklist'}>
       <div className={'decklist-list'}>
+        <h1 className={'decklist-title'}>{'Select Deck'}</h1>
 
-        <h1 className={'decklist-title'}>
-          {'Select Deck'}
-        </h1>
-
-        {
-          deckListInfoState
-            ? deckListInfoState.map((item) => (
+        {deckListInfoState
+          ? deckListInfoState.map((item) => (
               <DeckListItem
                 deckInfoItem={item}
                 key={generateUniqueID()}
                 onClick={() => selectDeck(item['id'])}
               />
             ))
-            : ''
-        }
+          : ''}
       </div>
 
-      <NewDeckButton
-        addDeck={addDeck}
-      />
+      <NewDeckButton addDeck={addDeck} />
     </div>
   )
 }

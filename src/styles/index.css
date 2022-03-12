@@ -1,12 +1,14 @@
 /* THIS DISABLES RUNTIME ERRORS */
-iframe{display: none;}
+iframe {
+  display: none;
+}
 
 :root {
   /* color palette */
   --_black: #202020;
   --_green: #28b34b;
-  --_orange: #B34115;
-  --_purple: #AF39B3;
+  --_orange: #b34115;
+  --_purple: #af39b3;
 
   /* specific color settings */
   --background: white;
@@ -36,7 +38,9 @@ iframe{display: none;}
   padding: 0;
 }
 
-body, html, #root {
+body,
+html,
+#root {
   height: 100%;
   font-family: verdana;
 }
@@ -90,7 +94,7 @@ body, html, #root {
 .nav-review-deck {
   height: 100%;
   padding: 0 0.6rem;
-  
+
   font-size: 1.6rem;
   border-radius: 0.4rem;
   color: white;
@@ -98,7 +102,7 @@ body, html, #root {
 
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 }
 
 .nav-review-deck:hover {
@@ -165,7 +169,7 @@ body, html, #root {
 
   text-align: center;
   font-size: 1.2rem;
-  
+
   border-radius: var(--app-border-rad);
 }
 
@@ -205,7 +209,7 @@ body, html, #root {
   height: 100%;
   width: 100%;
 
-  font-size: 1.2rem;;
+  font-size: 1.2rem;
 
   display: flex;
   align-items: center;
@@ -217,7 +221,7 @@ body, html, #root {
   height: 100%;
 
   color: white;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -445,7 +449,7 @@ body, html, #root {
   justify-content: space-between;
 }
 
-.form-input-new-deck  {
+.form-input-new-deck {
   padding: 0 1rem 0 1rem;
   width: 100%;
   height: 100%;
@@ -487,7 +491,7 @@ body, html, #root {
   font-weight: 400;
 
   border-radius: 999rem;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;

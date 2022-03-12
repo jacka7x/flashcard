@@ -1,5 +1,3 @@
-
-
 interface DECK {
   name: string
 }

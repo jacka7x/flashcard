@@ -1,6 +1,5 @@
-
 type DeepReadonly<T> = {
-  readonly [Key in keyof T]: DeepReadonly<T[Key]>;
+  readonly [Key in keyof T]: DeepReadonly<T[Key]>
 }
 
 // CHECK IF THIS CAN BE CHANGED
@@ -13,11 +12,11 @@ interface Card_Text {
 }
 
 interface Card_IF {
-  readonly card_text: Card_Text,
+  readonly card_text: Card_Text
   readonly review: {
-    readonly review_date: number,
+    readonly review_date: number
     readonly spacing: number
-  },
+  }
   readonly id: string
 }
 

@@ -1,4 +1,3 @@
-
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 
@@ -22,53 +21,50 @@ interface AddCardButtonProps {
   onMouseUp: () => void
 }
 
-const SelectDeckButton = ({workingDeck, onClick}: SelectDeckButtonProps) => {
+const SelectDeckButton = ({ workingDeck, onClick }: SelectDeckButtonProps) => {
   return (
-    <div
-      className={'nav-review-deck'}
-      onClick={onClick}
-    >
+    <div className={'nav-review-deck'} onClick={onClick}>
       {workingDeck['name']}
     </div>
   )
 }
 
-const AddCardButton = ({onMouseUp}: AddCardButtonProps) => {
-  return (<AddIcon
-    sx={{fontSize: '2.4rem'}}
-    className={'nav-button nav-add-card-button'}
-    onMouseUp={onMouseUp}
-          />)
+const AddCardButton = ({ onMouseUp }: AddCardButtonProps) => {
+  return (
+    <AddIcon
+      sx={{ fontSize: '2.4rem' }}
+      className={'nav-button nav-add-card-button'}
+      onMouseUp={onMouseUp}
+    />
+  )
 }
 
-const DeleteCardButton = ({onMouseUp}: AddCardButtonProps) => {
+const DeleteCardButton = ({ onMouseUp }: AddCardButtonProps) => {
   return (
     <DeleteIcon
-      sx={{fontSize: '2rem'}}
+      sx={{ fontSize: '2rem' }}
       className={'nav-button nav-delete-card-button'}
       onMouseUp={onMouseUp}
     />
   )
 }
 
-export const Navbar = ({workingDeck, reviewPile, reviewCount,
-  goToSelectDeck, deleteCard, openPopup}: Props) => {
-
+export const Navbar = ({
+  workingDeck,
+  reviewPile,
+  reviewCount,
+  goToSelectDeck,
+  deleteCard,
+  openPopup
+}: Props) => {
   return (
     <div className={'navbar'}>
-      <SelectDeckButton
-        workingDeck={workingDeck}
-        onClick={goToSelectDeck}
-      />
+      <SelectDeckButton workingDeck={workingDeck} onClick={goToSelectDeck} />
 
-      <p className={'nav-review-count'}>
-        {reviewCount}
-      </p>
+      <p className={'nav-review-count'}>{reviewCount}</p>
 
       <div className={'nav-button-container'}>
-        <AddCardButton
-          onMouseUp={() => openPopup('addCard')}
-        />
+        <AddCardButton onMouseUp={() => openPopup('addCard')} />
 
         <DeleteCardButton
           onMouseUp={() => deleteCard(workingDeck, reviewPile[0])}

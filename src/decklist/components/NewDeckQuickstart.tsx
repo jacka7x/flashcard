@@ -1,11 +1,8 @@
+/* eslint-disable */
 
-/* eslint-disable */ 
+interface Props {}
 
-interface Props {
-
-}
-
-export const NewDeckQuickstart = ({ }: Props) => {
+export const NewDeckQuickstart = ({}: Props) => {
   return 'Quickstart'
   // use DeckListItem styling!!!!
 }

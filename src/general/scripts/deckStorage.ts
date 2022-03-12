@@ -13,9 +13,10 @@ export const fetchDecksFromStorage = async (): Promise<Deck_IF[] | null> => {
   }
 }
 
-export const pushDeckToStorage =
-  async (deck: Deck_IF, newCards: Card_IF[]): Promise<number> => {
-
+export const pushDeckToStorage = async (
+  deck: Deck_IF,
+  newCards: Card_IF[]
+): Promise<number> => {
   const url: string = `http://172.30.1.35:5000/deck_list/${deck['id']}`
   const body: string = JSON.stringify({
     name: deck['name'],
@@ -25,7 +26,7 @@ export const pushDeckToStorage =
 
   const response: Response = await fetch(url, {
     method: 'PUT',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: body
   })
 
@@ -33,16 +34,17 @@ export const pushDeckToStorage =
   return response['status']
 }
 
-export const addCardToDeckInStorage =
-  async (deck: Deck_IF, newCardText: Card_Text): Promise<void> => {
-
+export const addCardToDeckInStorage = async (
+  deck: Deck_IF,
+  newCardText: Card_Text
+): Promise<void> => {
   const newCard: Card_IF = {
-      id: generateUniqueID(),
-      card_text: newCardText,
-      review: {
-        review_date: getCurrentUnixTime(),
-        spacing: getNewSpacingWrong()
-      }
+    id: generateUniqueID(),
+    card_text: newCardText,
+    review: {
+      review_date: getCurrentUnixTime(),
+      spacing: getNewSpacingWrong()
+    }
   }
 
   const newCards = [...deck['cards'].slice(), newCard]
@@ -51,14 +53,16 @@ export const addCardToDeckInStorage =
   console.log(`Added ${newCardText['face_text']} to ${deck['name']}.`)
 }
 
-export const deleteCardFromDeckInStorage =
-  async (deck: Deck_IF, oldCard: Card_IF): Promise<void> => {
-
+export const deleteCardFromDeckInStorage = async (
+  deck: Deck_IF,
+  oldCard: Card_IF
+): Promise<void> => {
   const newCards: Card_IF[] = deck['cards'].filter((card) => {
     return card['id'] !== oldCard['id']
   })
 
   await pushDeckToStorage(deck, newCards)
-  console.log(`Removed ${
-    oldCard['card_text']['face_text']} from ${deck['name']}.`)
+  console.log(
+    `Removed ${oldCard['card_text']['face_text']} from ${deck['name']}.`
+  )
 }

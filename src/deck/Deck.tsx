@@ -1,4 +1,3 @@
-
 // from components
 import { Navbar } from './components/Navbar'
 import { Card } from './components/Card'
@@ -30,11 +29,18 @@ const noCard: Card_IF = {
   id: '1234567890'
 }
 
-export const Deck = ({workingDeck, reviewPile, reviewCount,
-    goToSelectDeck, updateCard, deleteCard, openPopup}: Props) => {
-
-  const [currentCardState, setCurrentCardState] =
-    useState<Card_IF | undefined>()
+export const Deck = ({
+  workingDeck,
+  reviewPile,
+  reviewCount,
+  goToSelectDeck,
+  updateCard,
+  deleteCard,
+  openPopup
+}: Props) => {
+  const [currentCardState, setCurrentCardState] = useState<
+    Card_IF | undefined
+  >()
 
   const [cardFace, setCardFace] = useState<CardFace>('front')
 
@@ -69,9 +75,7 @@ export const Deck = ({workingDeck, reviewPile, reviewCount,
       />
 
       <Card
-        card={currentCardState
-? currentCardState
-: noCard}
+        card={currentCardState ? currentCardState : noCard}
         cardFace={cardFace}
       />
 
