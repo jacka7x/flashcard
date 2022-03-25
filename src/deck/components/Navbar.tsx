@@ -1,3 +1,4 @@
+// import { useState, useEffect } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 
@@ -8,7 +9,7 @@ interface Props {
   reviewPile: Card_IF[]
   reviewCount: number
   goToSelectDeck: () => void
-  deleteCard: (deck: Deck_IF, oldCard: Card_IF | undefined) => Promise<void>
+  deleteCardFromDeck: (card_id: string, deck_id: string) => Promise<void>
   openPopup: (popupType: Popups) => void
 }
 
@@ -19,6 +20,12 @@ interface SelectDeckButtonProps {
 
 interface AddCardButtonProps {
   onMouseUp: () => void
+}
+
+interface DeleteCardButtonProps {
+  reviewPile: Card_IF[]
+  workingDeck: Deck_IF
+  deleteCardFromDeck: (card_id: string, deck_id: string) => Promise<void>
 }
 
 const SelectDeckButton = ({ workingDeck, onClick }: SelectDeckButtonProps) => {
@@ -39,12 +46,24 @@ const AddCardButton = ({ onMouseUp }: AddCardButtonProps) => {
   )
 }
 
-const DeleteCardButton = ({ onMouseUp }: AddCardButtonProps) => {
+const DeleteCardButton = ({
+  reviewPile,
+  workingDeck,
+  deleteCardFromDeck
+}: DeleteCardButtonProps) => {
   return (
     <DeleteIcon
       sx={{ fontSize: '2rem' }}
       className={'nav-button nav-delete-card-button'}
-      onMouseUp={onMouseUp}
+      onMouseUp={() => {
+        if (reviewPile[0]) {
+          const card_id = reviewPile[0].id_card
+          const deck_id = workingDeck.id_deck
+          deleteCardFromDeck(card_id, deck_id)
+        } else {
+          console.error('No card to delete.')
+        }
+      }}
     />
   )
 }
@@ -54,7 +73,7 @@ export const Navbar = ({
   reviewPile,
   reviewCount,
   goToSelectDeck,
-  deleteCard,
+  deleteCardFromDeck,
   openPopup
 }: Props) => {
   return (
@@ -67,7 +86,9 @@ export const Navbar = ({
         <AddCardButton onMouseUp={() => openPopup('addCard')} />
 
         <DeleteCardButton
-          onMouseUp={() => deleteCard(workingDeck, reviewPile[0])}
+          deleteCardFromDeck={deleteCardFromDeck}
+          reviewPile={reviewPile}
+          workingDeck={workingDeck}
         />
       </div>
     </div>

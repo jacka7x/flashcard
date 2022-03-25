@@ -11,25 +11,41 @@ interface Card_Text {
   readonly back_text: string
 }
 
+interface Card_Review {
+  readonly review_date: number
+  readonly spacing: number
+}
+
+interface Card_Id {
+  readonly id_card: string
+  readonly id_ref: string
+}
+
 interface Card_IF {
+  readonly card_text: Card_Text
+  readonly review: Card_Review
+  readonly id_card: string
+  readonly id_ref?: string
+}
+
+interface Card_IF_NoId {
   readonly card_text: Card_Text
   readonly review: {
     readonly review_date: number
     readonly spacing: number
   }
-  readonly id: string
 }
 
 interface Deck_IF {
-  readonly id: string
+  readonly id_deck: string
   readonly name: string
   readonly cards: Card_IF[]
 }
 
 interface DeckInfo {
-  readonly name: string
   readonly id: string
-  readonly review_count: number
+  readonly name: string
+  readonly review_count: number | undefined
 }
 
 type Popups = Reaonly<null | 'addCard'>

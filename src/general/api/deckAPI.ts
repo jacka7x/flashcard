@@ -1,26 +1,29 @@
 import axios from 'axios'
-
-const base = 'https://us-central1-flashcard-92732.cloudfunctions.net/api'
-const uId = '7D7vg4gPqCRZPhSFNLBs'
+import { base, uId, SC_Created } from './settingsAPI'
 
 export const getAllDecks = async (): Promise<Deck_IF[] | null> => {
   const url = `${base}/users/${uId}/decks`
 
   try {
     const res = await axios.get(url)
-    const decks: Deck_IF[] = res.data
-    return decks
+    const allDecks: Deck_IF[] = res.data.map((item: Deck_IF) => {
+      return {
+        id_deck: item.id_deck,
+        name: item.name,
+        cards: item.cards
+      }
+    })
+
+    return allDecks
   } catch (error) {
     console.error(error)
     return null
   }
 }
 
-export const getDeck = () => {}
-
 export const createNewDeck = async (
   deckName: string
-): Promise<number | null> => {
+): Promise<Deck_IF | null> => {
   const url = `${base}/users/${uId}/decks`
   const body: DECK = {
     name: deckName
@@ -28,13 +31,18 @@ export const createNewDeck = async (
 
   try {
     const res = await axios.post(url, body)
-    return res.status
+    if (res.status !== SC_Created) throw new Error('Failed to create deck')
+    return {
+      id_deck: res.data,
+      name: body.name,
+      cards: []
+    }
   } catch (error) {
     console.error(error)
     return null
   }
 }
 
-export const updateDeck = () => {}
+export const updateDeck = () => null
 
-export const deleteDeck = () => {}
+export const deleteDeck = () => null

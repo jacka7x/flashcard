@@ -7,7 +7,7 @@ interface Props {
   deck: Deck_IF | null
   popupType: Popups
   closePopup: () => void
-  addCard: (deck: Deck_IF, newCardText: Card_Text) => Promise<void>
+  addDeckCard: (newCardText: Card_Text, deckId: string) => Promise<void>
 }
 
 interface CloseButtonProps {
@@ -24,14 +24,14 @@ const CloseButton = ({ onMouseUp }: CloseButtonProps) => {
   )
 }
 
-export const Popup = ({ deck, popupType, closePopup, addCard }: Props) => {
+export const Popup = ({ deck, popupType, closePopup, addDeckCard }: Props) => {
   return (
     <div className={'popup'} onMouseUp={() => closePopup()}>
       <div className={'popup-container'}>
         <CloseButton onMouseUp={() => closePopup()} />
 
         {popupType === 'addCard' ? (
-          <AddCardForm deck={deck} addCard={addCard} />
+          <AddCardForm deck={deck} addDeckCard={addDeckCard} />
         ) : (
           ''
         )}

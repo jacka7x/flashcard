@@ -9,10 +9,9 @@ import { useState, useEffect } from 'react'
 interface Props {
   workingDeck: Deck_IF
   reviewPile: Card_IF[]
-  reviewCount: number
   goToSelectDeck: () => void
   updateCard: (answer: Answer, card: Card_IF) => void
-  deleteCard: (deck: Deck_IF, oldCard: Card_IF | undefined) => Promise<void>
+  deleteCardFromDeck: (card_id: string, deck_id: string) => Promise<void>
   openPopup: (popupType: Popups) => void
 }
 
@@ -26,22 +25,19 @@ const noCard: Card_IF = {
     review_date: 0,
     spacing: 0
   },
-  id: '1234567890'
+  id_card: 'TESTID'
 }
 
 export const Deck = ({
   workingDeck,
   reviewPile,
-  reviewCount,
   goToSelectDeck,
   updateCard,
-  deleteCard,
+  deleteCardFromDeck,
   openPopup
 }: Props) => {
-  const [currentCardState, setCurrentCardState] = useState<
-    Card_IF | undefined
-  >()
-
+  const [cardState, setCardState] = useState<Card_IF | undefined>()
+  const [reviewCount, setReviewCount] = useState<number>(0)
   const [cardFace, setCardFace] = useState<CardFace>('front')
 
   const showAnswer = (): void => {
@@ -53,14 +49,15 @@ export const Deck = ({
   }
 
   const processAnswer = (answer: Answer): void => {
-    if (!currentCardState) return
-    updateCard(answer, currentCardState)
+    if (!cardState) return
+    updateCard(answer, cardState)
     nextCard()
   }
 
   // update current card [ASSUMES SORTED BY REVEIW DATE]
   useEffect(() => {
-    setCurrentCardState(reviewPile[0])
+    setCardState(reviewPile[0])
+    setReviewCount(reviewPile.length)
   }, [reviewPile])
 
   return (
@@ -70,14 +67,11 @@ export const Deck = ({
         reviewPile={reviewPile}
         reviewCount={reviewCount}
         goToSelectDeck={goToSelectDeck}
-        deleteCard={deleteCard}
+        deleteCardFromDeck={deleteCardFromDeck}
         openPopup={openPopup}
       />
 
-      <Card
-        card={currentCardState ? currentCardState : noCard}
-        cardFace={cardFace}
-      />
+      <Card card={cardState ? cardState : noCard} cardFace={cardFace} />
 
       <CardButtons
         reviewCount={reviewCount}

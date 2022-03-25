@@ -1,10 +1,12 @@
 interface Props {
   deck: Deck_IF | null
-  addCard: (deck: Deck_IF, newCardText: Card_Text) => Promise<void>
+  addDeckCard: (newCard: Card_Text, deckId: string) => Promise<void>
 }
 
-export const AddCardForm = ({ deck, addCard }: Props) => {
-  const submitNewCard = (event: React.FormEvent<HTMLFormElement>): void => {
+export const AddCardForm = ({ deck, addDeckCard }: Props) => {
+  const submitNewCard = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault()
 
     const newCardText: Card_Text = {
@@ -12,11 +14,11 @@ export const AddCardForm = ({ deck, addCard }: Props) => {
       back_text: event.currentTarget['back_text'].value
     }
 
-    if (deck) {
-      addCard(deck, newCardText)
-      console.log(`Submitted ${newCardText['face_text']}`)
-    } else {
-      console.log('No current deck')
+    try {
+      if (!deck) throw new Error('No current deck selected')
+      await addDeckCard(newCardText, deck['id_deck'])
+    } catch (error) {
+      console.error(error)
     }
   }
 

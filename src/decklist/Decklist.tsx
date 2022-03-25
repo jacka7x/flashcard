@@ -1,36 +1,35 @@
 import { DeckListItem } from './components/DeckListItem'
 import { NewDeckButton } from './components/NewDeckButton'
 import { generateUniqueID } from '../general/scripts/generateID'
-import { createNewDeck } from '../general/api/deckAPI'
-
 import { useState, useEffect } from 'react'
 
 // Change this to new type DeckListData -> update and pass from app
 interface Props {
-  allDecksState: Deck_IF[] | undefined
-  getDeckInfo: () => DeckInfo[] | null
+  allDecksState: Deck_IF[]
   selectDeck: (deckId: string) => void
+  addDeck: (deckName: string) => Promise<void>
 }
 
-export const Decklist = ({ allDecksState, getDeckInfo, selectDeck }: Props) => {
-  const [deckListInfoState, setDeckListInfoState] = useState<DeckInfo[] | null>(
-    null
-  )
+export const Decklist = ({ allDecksState, selectDeck, addDeck }: Props) => {
+  const [deckListInfoState, setDeckListInfoState] = useState<DeckInfo[]>([])
 
   useEffect(() => {
-    const info: DeckInfo[] | null = getDeckInfo()
+    const info: DeckInfo[] = getDeckInfo()
     setDeckListInfoState(info)
   }, [allDecksState])
 
-  const addDeck = async (deckName: string): Promise<void> => {
-    try {
-      await createNewDeck(deckName)
-      console.log(deckName)
-      // show GUI success
-    } catch (error) {
-      console.error(error)
-      // show GUI error
-    }
+  const getDeckInfo = (): DeckInfo[] => {
+    if (!allDecksState) return []
+
+    const deckInfo: DeckInfo[] = allDecksState.map((deck) => {
+      return {
+        name: deck['name'],
+        id: deck['id_deck'],
+        review_count: 5
+      }
+    })
+
+    return deckInfo
   }
 
   return (

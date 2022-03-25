@@ -41,8 +41,9 @@
     "react/jsx-sort-props": 0,
     "react/no-multi-comp": 0,
     
-    "no-magic-numbers": [2, {"ignore": [0, 1]}],
-
+    "no-magic-numbers": [2, {"ignore": [0, 1, -1]}],
+    
+    "max-lines": 0,
     "linebreak-style": 0,
     "quotes": 0,
     "capitalized-comments": 0,
