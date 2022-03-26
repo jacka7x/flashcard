@@ -43,7 +43,7 @@ interface Deck_IF {
 }
 
 interface DeckInfo {
-  readonly id: string
+  readonly id_deck: string
   readonly name: string
   readonly review_count: number | undefined
 }

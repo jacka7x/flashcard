@@ -392,11 +392,15 @@ html,
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .decklist-item-name {
   font-weight: 700;
+  flex: 1;
+}
+
+.decklist-item-options {
 }
 
 .decklist-item-review {
@@ -411,6 +415,17 @@ html,
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.decklist-item-button {
+  color: var(--_black);
+}
+
+.decklist-item-delete-deck-button {
+}
+
+.decklist-item-delete-deck-button:hover {
+  color: red;
 }
 
 .new-deck-button {

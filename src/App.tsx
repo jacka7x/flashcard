@@ -15,7 +15,11 @@ import { useInterval } from './general/scripts/useInterval'
 import { sortByReview } from './general/scripts/sortByReview'
 
 // from general/api
-import { getAllDecks, createNewDeck } from './general/api/deckAPI'
+import {
+  getAllDecks_db,
+  createNewDeck,
+  deleteDeck_db
+} from './general/api/deckAPI'
 import { addDeckCard_db, deleteDeckCard_db } from './general/api/deckCardAPI'
 import { updateSpacing_db } from './general/api/userCardAPI'
 
@@ -56,7 +60,7 @@ const App = () => {
 
   const loadDecks = async (): Promise<void> => {
     try {
-      const decks: Deck_IF[] | null = await getAllDecks()
+      const decks: Deck_IF[] | null = await getAllDecks_db()
       if (!decks) throw new Error('No decks found.')
       setAllDecksState(decks)
     } catch (error) {
@@ -128,9 +132,21 @@ const App = () => {
     }
   }
 
-  // ++delete deck
-
-  // ++edit/view deck meta
+  const deleteDeck = async (deckId: string): Promise<void> => {
+    try {
+      await deleteDeck_db(deckId)
+      // show GUI progress
+      setAllDecksState(
+        allDecksState.filter((deck: Deck_IF) => {
+          return deck['id_deck'] !== deckId
+        })
+      )
+      // show GUI sucess
+    } catch (error) {
+      console.error(error)
+      // show GUI error
+    }
+  }
 
   const addDeckCard = async (
     newCardText: Card_Text,
@@ -288,6 +304,7 @@ const App = () => {
           allDecksState={allDecksState}
           selectDeck={selectDeck}
           addDeck={addDeck}
+          deleteDeck={deleteDeck}
         />
       )}
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { base, uId, SC_Created } from './settingsAPI'
+import { base, uId, SC_Created, SC_Success } from './settingsAPI'
 
-export const getAllDecks = async (): Promise<Deck_IF[] | null> => {
+export const getAllDecks_db = async (): Promise<Deck_IF[] | null> => {
   const url = `${base}/users/${uId}/decks`
 
   try {
@@ -45,4 +45,17 @@ export const createNewDeck = async (
 
 export const updateDeck = () => null
 
-export const deleteDeck = () => null
+export const deleteDeck_db = async (
+  deckId: string
+): Promise<typeof SC_Success | null> => {
+  const url = `${base}/users/${uId}/decks/${deckId}`
+
+  try {
+    const res = await axios.delete(url)
+    if (res.status !== SC_Success) throw new Error('Failed to delete deck')
+    return SC_Success
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}

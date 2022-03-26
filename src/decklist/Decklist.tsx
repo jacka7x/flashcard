@@ -8,9 +8,15 @@ interface Props {
   allDecksState: Deck_IF[]
   selectDeck: (deckId: string) => void
   addDeck: (deckName: string) => Promise<void>
+  deleteDeck: (deckId: string) => Promise<void>
 }
 
-export const Decklist = ({ allDecksState, selectDeck, addDeck }: Props) => {
+export const Decklist = ({
+  allDecksState,
+  selectDeck,
+  addDeck,
+  deleteDeck
+}: Props) => {
   const [deckListInfoState, setDeckListInfoState] = useState<DeckInfo[]>([])
 
   useEffect(() => {
@@ -24,7 +30,7 @@ export const Decklist = ({ allDecksState, selectDeck, addDeck }: Props) => {
     const deckInfo: DeckInfo[] = allDecksState.map((deck) => {
       return {
         name: deck['name'],
-        id: deck['id_deck'],
+        id_deck: deck['id_deck'],
         review_count: 5
       }
     })
@@ -42,7 +48,8 @@ export const Decklist = ({ allDecksState, selectDeck, addDeck }: Props) => {
               <DeckListItem
                 deckInfoItem={item}
                 key={generateUniqueID()}
-                onClick={() => selectDeck(item['id'])}
+                onClick={() => selectDeck(item['id_deck'])}
+                deleteDeck={deleteDeck}
               />
             ))
           : ''}
