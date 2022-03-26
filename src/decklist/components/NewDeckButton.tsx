@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { 
+  useOutsideClick
+} from '../../../src/general/scripts/detectOutsideClick'
 
 interface Props {
   addDeck: (deckName: string) => void
@@ -9,9 +12,13 @@ type ButtonState = Readonly<'inactive' | 'active'>
 export const NewDeckButton = ({ addDeck }: Props) => {
   const [buttonState, setButtonState] = useState<ButtonState>('inactive')
 
-  const enterNewDeckName = () => {
-    setButtonState('active')
-  }
+  const closeButton = () => setButtonState('inactive')
+  const openButton = () => setButtonState('active')
+
+  const buttonWrapper = useRef(null)
+  useOutsideClick(buttonWrapper, closeButton)
+
+  
 
   const submitNewDeck = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
@@ -21,14 +28,17 @@ export const NewDeckButton = ({ addDeck }: Props) => {
     if (!deckName.trim()) return
 
     addDeck(deckName)
-    setButtonState('inactive')
+    closeButton()
   }
 
   return buttonState === 'active' ? (
-    <div className={'new-deck-button new-deck-button-enter'}>
+    <div
+      className={'new-deck-button new-deck-button-enter'}
+      ref={buttonWrapper}
+    >
       <form
-        onSubmit={(event) => submitNewDeck(event)}
         className={'new-deck-button-form'}
+        onSubmit={(event) => submitNewDeck(event)}
       >
         <label htmlFor={'deck_name'} />
 
@@ -37,6 +47,7 @@ export const NewDeckButton = ({ addDeck }: Props) => {
           autoComplete={'off'}
           className={'form-input-new-deck'}
           name={'deck_name'}
+          autoFocus
         />
 
         <input
@@ -48,7 +59,7 @@ export const NewDeckButton = ({ addDeck }: Props) => {
 
       <div
         className={'new-deck-cancel'}
-        onClick={() => setButtonState('inactive')}
+        onClick={() => closeButton()}
       >
         {'Cancel'}
       </div>
@@ -56,7 +67,7 @@ export const NewDeckButton = ({ addDeck }: Props) => {
   ) : (
     <div
       className={'new-deck-button new-deck-button-click'}
-      onClick={() => enterNewDeckName()}
+      onClick={() => openButton()}
     >
       {'Add Deck'}
     </div>
