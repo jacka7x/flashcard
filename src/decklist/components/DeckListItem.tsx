@@ -14,7 +14,7 @@ interface DeleteDeckButtonProps {
 const DeleteDeckButton = ({ onClick }: DeleteDeckButtonProps) => {
   return (
     <DeleteIcon
-      sx={{ fontSize: '2rem' }}
+      sx={{ fontSize: '1.5rem' }}
       className={'decklist-item-button decklist-item-delete-deck-button'}
       onClick={onClick}
     />

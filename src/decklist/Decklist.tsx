@@ -43,7 +43,7 @@ export const Decklist = ({
       <div className={'decklist-list'}>
         <h1 className={'decklist-title'}>{'Select Deck'}</h1>
 
-        {deckListInfoState
+        {deckListInfoState.length > 0
           ? deckListInfoState.map((item) => (
               <DeckListItem
                 deckInfoItem={item}
@@ -52,7 +52,7 @@ export const Decklist = ({
                 deleteDeck={deleteDeck}
               />
             ))
-          : ''}
+          : <p className={'empty-decklist-message'}>{'No decks'}</p>}
       </div>
 
       <NewDeckButton addDeck={addDeck} />

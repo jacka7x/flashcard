@@ -372,9 +372,18 @@ html,
 }
 
 .decklist-list {
-  /* outline: 1px solid red; */
   width: 80%;
   flex: 1;
+}
+
+.empty-decklist-message {
+  margin: 0 auto 0 auto;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  opacity: 0.6;
 }
 
 .decklist-item {
@@ -384,6 +393,7 @@ html,
 
   height: 3rem;
   width: 100%;
+  line-height: 100%;
 
   color: var(--decklist-text);
   background-color: var(--decklist-item-background);
@@ -401,6 +411,7 @@ html,
 }
 
 .decklist-item-options {
+  margin: 0 0.4rem 0 0;
 }
 
 .decklist-item-review {
