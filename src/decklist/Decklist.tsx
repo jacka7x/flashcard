@@ -1,7 +1,9 @@
 import { DeckListItem } from './components/DeckListItem'
 import { NewDeckButton } from './components/NewDeckButton'
 import { generateUniqueID } from '../general/scripts/generateID'
+import { useInterval, reviewUpdatePeriod } from '../general/scripts/useInterval'
 import { useState, useEffect } from 'react'
+import { getCurrentUnixTime } from '../general/scripts/scheduling'
 
 // Change this to new type DeckListData -> update and pass from app
 interface Props {
@@ -24,6 +26,12 @@ export const Decklist = ({
     setDeckListInfoState(info)
   }, [allDecksState])
 
+  // update review deck periodically
+  useInterval(() => {
+    const info: DeckInfo[] = getDeckInfo()
+    setDeckListInfoState(info)
+  }, reviewUpdatePeriod)
+
   const getDeckInfo = (): DeckInfo[] => {
     if (!allDecksState) return []
 
@@ -31,11 +39,21 @@ export const Decklist = ({
       return {
         name: deck['name'],
         id_deck: deck['id_deck'],
-        review_count: 5
+        review_count: countReviewableCards(deck)
       }
     })
 
     return deckInfo
+  }
+
+  const countReviewableCards = (deck: Deck_IF): number => {
+    const unixTime = getCurrentUnixTime()
+
+    return deck['cards'].reduce((count, card) => {
+      return card['review']['review_date'] <= unixTime
+        ? count + 1
+        : count
+    }, 0)
   }
 
   return (

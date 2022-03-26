@@ -11,7 +11,7 @@ import {
   spacingBaseValue
 } from './general/scripts/scheduling'
 
-import { useInterval } from './general/scripts/useInterval'
+import { useInterval, reviewUpdatePeriod } from './general/scripts/useInterval'
 import { sortByReview } from './general/scripts/sortByReview'
 
 // from general/api
@@ -30,10 +30,6 @@ import { useState, useEffect } from 'react'
 // buggy when using arrow function
 const App = () => {
   /* eslint func-style: 2 */
-
-  // dynamically update to period to next review!!
-  // test useInterval works properly with updating period
-  const reviewUpdatePeriod = 200
 
   // deck and card states
   const [allDecksState, setAllDecksState] = useState<Deck_IF[]>([])

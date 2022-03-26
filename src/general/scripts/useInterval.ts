@@ -1,5 +1,7 @@
 import { useRef, useEffect } from 'react'
 
+export const reviewUpdatePeriod = 200
+
 export const useInterval = (
   callback: () => void,
   delay: number | null
